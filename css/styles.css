@@ -1,0 +1,445 @@
+/* =========================================================
+   Apple Design System (WWDC Fluid Interfaces & Human Interface Guidelines)
+   Dynamic Light & Dark Color Palette (Día y Noche)
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* System Typography */
+  --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Plus Jakarta Sans", "Helvetica Neue", sans-serif;
+  --apple-mono: "SF Mono", Monaco, Menlo, Consolas, "JetBrains Mono", monospace;
+  
+  /* Apple Light Mode Palette */
+  --apple-bg: #f5f5f7;
+  --apple-card-bg: rgba(255, 255, 255, 0.88);
+  --apple-card-elevated: #ffffff;
+  --apple-nav-bg: rgba(255, 255, 255, 0.78);
+  --apple-border: rgba(0, 0, 0, 0.08);
+  --apple-border-strong: rgba(0, 0, 0, 0.14);
+  
+  --apple-text-primary: #1d1d1f;
+  --apple-text-secondary: #86868b;
+  --apple-text-tertiary: #a1a1a6;
+  
+  --apple-input-bg: rgba(0, 0, 0, 0.035);
+  --apple-input-hover: rgba(0, 0, 0, 0.06);
+  --apple-input-focus: #ffffff;
+  
+  /* System Accent Colors (Light) */
+  --apple-blue: #0071e3;
+  --apple-blue-hover: #0077ed;
+  --apple-green: #34c759;
+  --apple-green-hover: #30b753;
+  --apple-indigo: #5856d6;
+  --apple-purple: #af52de;
+  --apple-pink: #ff2d55;
+  --apple-red: #ff3b30;
+  --apple-orange: #ff9500;
+  --apple-yellow: #ffcc00;
+  
+  /* Segmented Controls */
+  --apple-seg-bg: rgba(0, 0, 0, 0.05);
+  --apple-seg-active: #ffffff;
+  --apple-seg-text-active: #0071e3;
+  
+  /* Spring Bezier Curves */
+  --spring-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-snappy: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Apple Dark Mode Palette (.dark) */
+html.dark {
+  --apple-bg: #000000;
+  --apple-card-bg: rgba(28, 28, 30, 0.85);
+  --apple-card-elevated: #1c1c1e;
+  --apple-nav-bg: rgba(22, 22, 24, 0.82);
+  --apple-border: rgba(255, 255, 255, 0.12);
+  --apple-border-strong: rgba(255, 255, 255, 0.2);
+  
+  --apple-text-primary: #f5f5f7;
+  --apple-text-secondary: #a1a1a6;
+  --apple-text-tertiary: #636366;
+  
+  --apple-input-bg: rgba(255, 255, 255, 0.08);
+  --apple-input-hover: rgba(255, 255, 255, 0.12);
+  --apple-input-focus: #2c2c2e;
+  
+  /* Vibrant System Accent Colors (Dark) */
+  --apple-blue: #0a84ff;
+  --apple-blue-hover: #409cff;
+  --apple-green: #30d158;
+  --apple-green-hover: #34c759;
+  --apple-indigo: #5e5ce6;
+  --apple-purple: #bf5af2;
+  --apple-pink: #ff375f;
+  --apple-red: #ff453a;
+  --apple-orange: #ff9f0a;
+  --apple-yellow: #ffd60a;
+  
+  --apple-seg-bg: rgba(255, 255, 255, 0.08);
+  --apple-seg-active: #2c2c2e;
+  --apple-seg-text-active: #0a84ff;
+}
+
+/* Global Foundation */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--apple-font);
+  background-color: var(--apple-bg);
+  color: var(--apple-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--apple-bg);
+  color: var(--apple-text-primary);
+}
+
+/* Apple Fluid Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.25);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.45);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* =========================================================
+   1. Materials & Translucency (Apple Glass)
+   ========================================================= */
+
+.apple-glass-nav {
+  background: var(--apple-nav-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 0.5px solid var(--apple-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.apple-card {
+  background: var(--apple-card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1.25rem;
+  border: 1px solid var(--apple-border);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s var(--spring-smooth), box-shadow 0.3s var(--spring-smooth), background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.apple-modal-card {
+  background: var(--apple-card-bg);
+  backdrop-filter: blur(30px) saturate(190%);
+  -webkit-backdrop-filter: blur(30px) saturate(190%);
+  border-radius: 1.5rem;
+  border: 1px solid var(--apple-border);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3), 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+  color: var(--apple-text-primary);
+}
+
+/* =========================================================
+   2. Typography & Optical Hierarchy
+   ========================================================= */
+
+.apple-title-display {
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+  color: var(--apple-text-primary);
+}
+
+.apple-title-section {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+  color: var(--apple-text-primary);
+}
+
+.apple-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  color: var(--apple-text-primary);
+  opacity: 0.88;
+}
+
+.apple-caption {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--apple-text-secondary);
+}
+
+/* =========================================================
+   3. Tactile Buttons & Feedback
+   ========================================================= */
+
+.apple-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-family: var(--apple-font);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: 0.875rem;
+  padding: 0.5625rem 1.125rem;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s var(--spring-snappy), background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.apple-btn:active, .apple-touch-interactive:active {
+  transform: scale(0.96);
+  transition: transform 0.08s var(--spring-snappy);
+}
+
+.apple-btn-primary {
+  background-color: var(--apple-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.28);
+}
+.apple-btn-primary:hover {
+  background-color: var(--apple-blue-hover);
+  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.38);
+}
+
+.apple-btn-success {
+  background-color: var(--apple-green);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(52, 199, 89, 0.28);
+}
+.apple-btn-success:hover {
+  background-color: var(--apple-green-hover);
+}
+
+.apple-btn-secondary {
+  background-color: var(--apple-input-bg);
+  color: var(--apple-text-primary);
+  border: 1px solid var(--apple-border);
+}
+.apple-btn-secondary:hover {
+  background-color: var(--apple-input-hover);
+}
+
+.apple-btn-danger {
+  background-color: rgba(255, 59, 48, 0.12);
+  color: var(--apple-red);
+}
+.apple-btn-danger:hover {
+  background-color: rgba(255, 59, 48, 0.22);
+}
+
+/* Theme Toggle Button */
+.btn-theme-toggle {
+  background: var(--apple-input-bg);
+  border: 1px solid var(--apple-border);
+  color: var(--apple-text-primary);
+  border-radius: 0.875rem;
+  padding: 0.4rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-theme-toggle:hover {
+  background: var(--apple-input-hover);
+  transform: scale(1.03);
+}
+.btn-theme-toggle:active {
+  transform: scale(0.96);
+}
+
+/* =========================================================
+   4. Form Controls (Adaptive Smooth Inputs)
+   ========================================================= */
+
+.form-input-clean {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background-color: var(--apple-input-bg);
+  border: 1px solid var(--apple-border);
+  border-radius: 0.75rem;
+  font-family: var(--apple-font);
+  font-size: 0.84375rem;
+  font-weight: 500;
+  color: var(--apple-text-primary);
+  transition: all 0.2s var(--spring-smooth);
+}
+
+.form-input-clean:hover {
+  background-color: var(--apple-input-hover);
+  border-color: var(--apple-border-strong);
+}
+
+.form-input-clean:focus {
+  outline: none;
+  background-color: var(--apple-input-focus);
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3.5px rgba(10, 132, 255, 0.18);
+}
+
+.form-table-input {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  background-color: var(--apple-input-bg);
+  border: 1px solid var(--apple-border);
+  border-radius: 0.5rem;
+  font-family: var(--apple-font);
+  font-size: 0.8125rem;
+  color: var(--apple-text-primary);
+  transition: all 0.15s ease;
+}
+
+.form-table-input:focus {
+  outline: none;
+  background-color: var(--apple-input-focus);
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 2.5px rgba(10, 132, 255, 0.18);
+}
+
+/* =========================================================
+   5. Segmented Controls & Stepper Pills
+   ========================================================= */
+
+.apple-segmented-container {
+  background: var(--apple-seg-bg);
+  padding: 0.25rem;
+  border-radius: 0.875rem;
+  display: flex;
+  gap: 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.stepper-pill {
+  border-radius: 0.75rem;
+  transition: all 0.2s var(--spring-smooth);
+  border: none;
+  user-select: none;
+}
+
+.stepper-pill.active {
+  background: var(--apple-seg-active);
+  color: var(--apple-seg-text-active);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.stepper-pill.completed {
+  background: rgba(52, 199, 89, 0.15);
+  color: var(--apple-green);
+}
+
+.stepper-pill:not(.active):not(.completed) {
+  background: transparent;
+  color: var(--apple-text-secondary);
+}
+
+.stepper-pill:not(.active):hover {
+  color: var(--apple-text-primary);
+  background: var(--apple-input-bg);
+}
+
+/* =========================================================
+   6. Canvas Studio (Croquis)
+   ========================================================= */
+
+.canvas-studio-container {
+  position: relative;
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+  border: 1.5px solid var(--apple-border);
+  border-radius: 1rem;
+  cursor: crosshair;
+  touch-action: none;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dark .canvas-studio-container {
+  background-color: #ffffff; /* Canvas board remains pure white for clean drawing & PDF export */
+  border-color: var(--apple-border-strong);
+}
+
+.canvas-studio-container:hover {
+  border-color: var(--apple-border-strong);
+}
+
+.canvas-studio-container.drawing-active {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3.5px rgba(10, 132, 255, 0.18);
+}
+
+/* =========================================================
+   7. Spring Animations (Fluid Modals & Transitions)
+   ========================================================= */
+
+@keyframes appleModalEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-apple-modal {
+  animation: appleModalEnter 0.28s var(--spring-smooth) forwards;
+}
+
+/* =========================================================
+   8. Reduced Motion & Accessibility (Rule 14)
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .apple-btn:active, .apple-touch-interactive:active {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .apple-glass-nav, .apple-card, .apple-modal-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--apple-card-elevated) !important;
+  }
+}

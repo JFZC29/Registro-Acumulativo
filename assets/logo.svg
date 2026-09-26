@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Heart background -->
+  <path d="M50,88 C20,65 5,45 5,28 C5,12 18,3 32,3 C40,3 47,8 50,15 C53,8 60,3 68,3 C82,3 95,12 95,28 C95,45 80,65 50,88 Z" fill="#b91c1c" />
+  <!-- Center figure (Adult) -->
+  <circle cx="50" cy="33" r="5.5" fill="#fef08a" />
+  <path d="M42,42 C42,40 45,39 50,39 C55,39 58,40 58,42 L56,60 L44,60 Z" fill="#fef08a" />
+  <!-- Left figure (Parent/Child) -->
+  <circle cx="34" cy="38" r="4.5" fill="#fef08a" />
+  <path d="M28,45 C28,43 30,42 34,42 C38,42 40,43 40,45 L38,58 L30,58 Z" fill="#fef08a" />
+  <!-- Right figure (Parent/Child) -->
+  <circle cx="66" cy="38" r="4.5" fill="#fef08a" />
+  <path d="M60,45 C60,43 62,42 66,42 C70,42 72,43 72,45 L70,58 L62,58 Z" fill="#fef08a" />
+</svg>
