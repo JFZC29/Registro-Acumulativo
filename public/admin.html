@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrativo - DECE Registro Acumulativo</title>
+  <script src="/js/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {}
+      }
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/pdf-format.css">
+</head>
+<body class="min-h-full flex flex-col antialiased selection:bg-[#0071e3] selection:text-white">
+
+  <!-- Apple Glass Navigation Header -->
+  <header class="apple-glass-nav sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+      <div class="flex items-center space-x-3 sm:space-x-4 min-w-0">
+        <div class="bg-white p-1 rounded-xl shadow-sm border border-black/5 flex-shrink-0">
+          <img src="/img/logo.png" alt="Logo Institucional" class="h-8 sm:h-9 w-auto max-w-[150px] object-contain">
+        </div>
+        <div class="border-l border-[var(--apple-border)] pl-3 sm:pl-4 hidden sm:block">
+          <h1 class="text-xs sm:text-sm font-bold leading-tight">DECE · Panel Administrativo</h1>
+          <p class="text-[11px] text-[var(--apple-text-secondary)]">Gestión de Registros Acumulativos Generales</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+        <!-- Day / Night Mode Apple Switcher -->
+        <button type="button" class="btn-theme-toggle w-8 h-8 flex items-center justify-center rounded-xl p-0" title="Cambiar tema">
+          <span class="theme-icon text-sm leading-none">&#127769;</span>
+        </button>
+
+        <a href="/" target="_blank" class="apple-btn apple-btn-secondary text-xs">
+          <span>&#128279;</span> <span class="hidden sm:inline">Formulario Público</span>
+        </a>
+
+        <div class="h-4 w-px bg-[var(--apple-border)] hidden sm:block"></div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-medium hidden md:inline text-[var(--apple-text-secondary)]" id="admin-user-display">Administrador</span>
+          <button type="button" id="btn-change-pass" class="apple-btn apple-btn-secondary text-xs p-2" title="Cambiar Contraseña">
+            &#128273;
+          </button>
+          <button type="button" id="btn-logout" onclick="handleAdminLogout()" class="apple-btn apple-btn-danger font-bold text-xs">
+            <span>&#128682;</span> Salir
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Dashboard -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+
+    <!-- Apple KPI Metrics Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="apple-card p-5 flex items-center justify-between">
+        <div>
+          <p class="apple-caption uppercase tracking-wider">Total Estudiantes</p>
+          <h3 class="text-2xl sm:text-3xl font-bold mt-1" id="stat-total">0</h3>
+          <p class="text-[11px] text-[var(--apple-green)] font-medium mt-0.5">&#10003; Registros completos</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-[var(--apple-blue)]/10 text-[var(--apple-blue)] flex items-center justify-center text-lg font-bold">
+          &#128101;
+        </div>
+      </div>
+
+      <div class="apple-card p-5 flex items-center justify-between">
+        <div>
+          <p class="apple-caption uppercase tracking-wider">Con Discapacidad</p>
+          <h3 class="text-2xl sm:text-3xl font-bold mt-1" id="stat-disability">0</h3>
+          <p class="text-[11px] text-[var(--apple-blue)] font-medium mt-0.5">&#9855; Prioritarios</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-[var(--apple-green)]/10 text-[var(--apple-green)] flex items-center justify-center text-lg font-bold">
+          &#9855;
+        </div>
+      </div>
+
+      <div class="apple-card p-5 flex items-center justify-between">
+        <div>
+          <p class="apple-caption uppercase tracking-wider">Cursos Registrados</p>
+          <h3 class="text-2xl sm:text-3xl font-bold mt-1" id="stat-courses">0</h3>
+          <p class="text-[11px] text-[var(--apple-text-secondary)] font-medium mt-0.5">&#128218; Paralelos activos</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-[var(--apple-purple)]/10 text-[var(--apple-purple)] flex items-center justify-center text-lg font-bold">
+          &#128218;
+        </div>
+      </div>
+
+      <div class="apple-card p-5 flex items-center justify-between">
+        <div>
+          <p class="apple-caption uppercase tracking-wider">Base de Datos</p>
+          <h3 class="text-sm font-bold text-[var(--apple-green)] mt-1.5 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[var(--apple-green)] animate-pulse"></span> Activa
+          </h3>
+          <p class="text-[11px] text-[var(--apple-text-secondary)] font-medium mt-0.5">2026 - 2027</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-[var(--apple-orange)]/10 text-[var(--apple-orange)] flex items-center justify-center text-lg font-bold">
+          &#9889;
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Bar Card -->
+    <div class="apple-card p-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        
+        <!-- Search & Filter Controls -->
+        <div class="flex flex-1 flex-col sm:flex-row items-center gap-2.5">
+          <div class="relative w-full sm:w-80">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--apple-text-secondary)]">&#128269;</span>
+            <input type="text" id="admin-search-input" class="w-full pl-9 pr-3 py-2 form-input-clean text-xs font-medium" placeholder="Buscar estudiante, cédula...">
+          </div>
+
+          <div class="w-full sm:w-56">
+            <select id="admin-filter-curso" class="w-full py-2 px-3 form-input-clean text-xs font-medium">
+              <option value="" class="dark:bg-[#1c1c1e]">Todos los cursos</option>
+            </select>
+          </div>
+
+          <button type="button" id="btn-admin-refresh" class="apple-btn apple-btn-secondary p-2 text-xs" title="Actualizar">
+            &#8635;
+          </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2">
+          <a href="/api/export/csv" target="_blank" class="apple-btn apple-btn-secondary text-xs">
+            <span>&#128229;</span> Exportar CSV
+          </a>
+
+          <button type="button" id="btn-admin-new" class="apple-btn apple-btn-primary text-xs">
+            <span>+</span> Nuevo Registro
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Records Table Card -->
+    <div class="apple-card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse min-w-[800px]">
+          <thead class="bg-[var(--apple-input-bg)] text-[var(--apple-text-secondary)] font-bold border-b border-[var(--apple-border)] uppercase tracking-wider text-[10.5px]">
+            <tr>
+              <th class="py-3 px-4">Estudiante</th>
+              <th class="py-3 px-3">Cédula</th>
+              <th class="py-3 px-3">Curso</th>
+              <th class="py-3 px-3">Representante</th>
+              <th class="py-3 px-3">Teléfono</th>
+              <th class="py-3 px-3">Fecha</th>
+              <th class="py-3 px-4 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="records-table-body" class="divide-y divide-[var(--apple-border)]">
+            <tr>
+              <td colspan="7" class="text-center py-10 text-[var(--apple-text-secondary)] font-medium">Cargando registros...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="p-3.5 border-t border-[var(--apple-border)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--apple-text-secondary)]">
+        <div id="pagination-info">Mostrando 0 registros</div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btn-prev-page" class="apple-btn apple-btn-secondary text-xs py-1 px-3 disabled:opacity-30 disabled:cursor-not-allowed">Anterior</button>
+          <span id="page-indicator" class="font-bold text-[var(--apple-text-primary)] px-2 text-xs">Página 1</span>
+          <button type="button" id="btn-next-page" class="apple-btn apple-btn-secondary text-xs py-1 px-3 disabled:opacity-30 disabled:cursor-not-allowed">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= ADMIN MODALS ================= -->
+
+  <!-- Modal Edit / Create Record -->
+  <div id="modalRecordEditor" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="apple-modal-card max-w-4xl w-full max-h-[90vh] flex flex-col animate-apple-modal">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-[var(--apple-border)] flex items-center justify-between">
+        <div>
+          <h3 id="editor-modal-title" class="text-base font-bold">Editar Registro Acumulativo</h3>
+          <p id="editor-modal-subtitle" class="apple-caption">Modifique los datos y guarde los cambios</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="editor-btn-pdf" class="apple-btn apple-btn-secondary text-xs">
+            📥 PDF
+          </button>
+          <button type="button" id="editor-btn-preview" class="apple-btn apple-btn-secondary text-xs">
+            👁️ Ver
+          </button>
+          <button type="button" onclick="closeEditorModal()" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] p-1 text-xl leading-none">&times;</button>
+        </div>
+      </div>
+
+      <!-- Modal Body (Scrollable Form) -->
+      <div class="p-6 overflow-y-auto flex-1 custom-scrollbar">
+        <form id="adminRecordForm" class="space-y-5">
+          <input type="hidden" id="edit_record_id">
+
+          <!-- Section 1: Estudiante & Croquis -->
+          <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
+            <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-blue)]">
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-blue)]"></span> 1. Identificación y Croquis
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div class="sm:col-span-2"><label class="apple-label">Estudiante:</label><input type="text" id="a_est_nombre" required class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Nacionalidad:</label><input type="text" id="a_est_nacionalidad" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">N° Cédula:</label><input type="text" id="a_est_identificacion" required class="form-input-clean font-mono"></div>
+              <div><label class="apple-label">Fecha Nacimiento:</label><input type="date" id="a_est_fecha_nac" class="form-input-clean"></div>
+              <div><label class="apple-label">Edad:</label><input type="text" id="a_est_edad" class="form-input-clean"></div>
+              <div class="sm:col-span-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <div class="sm:col-span-2">
+                    <label class="apple-label">Curso / Año:</label>
+                    <select id="a_est_curso" required class="form-input-clean bg-transparent">
+                      <option value="INICIAL 1 (3 AÑOS)" class="dark:bg-[#1c1c1e]">Inicial 1 (3 años)</option>
+                      <option value="INICIAL 2 (4 AÑOS)" class="dark:bg-[#1c1c1e]">Inicial 2 (4 años)</option>
+                      <option value="1° DE BÁSICA (PREPARATORIA)" class="dark:bg-[#1c1c1e]">1° de Básica (Preparatoria)</option>
+                      <option value="2° DE BÁSICA" class="dark:bg-[#1c1c1e]">2° de Básica</option>
+                      <option value="3° DE BÁSICA" class="dark:bg-[#1c1c1e]">3° de Básica</option>
+                      <option value="4° DE BÁSICA" class="dark:bg-[#1c1c1e]">4° de Básica</option>
+                      <option value="5° DE BÁSICA" class="dark:bg-[#1c1c1e]">5° de Básica</option>
+                      <option value="6° DE BÁSICA" class="dark:bg-[#1c1c1e]">6° de Básica</option>
+                      <option value="7° DE BÁSICA" class="dark:bg-[#1c1c1e]">7° de Básica</option>
+                      <option value="8° DE BÁSICA" class="dark:bg-[#1c1c1e]">8° de Básica</option>
+                      <option value="9° DE BÁSICA" class="dark:bg-[#1c1c1e]">9° de Básica</option>
+                      <option value="10° DE BÁSICA" class="dark:bg-[#1c1c1e]">10° de Básica</option>
+                      <option value="1° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">1° de Bachillerato</option>
+                      <option value="2° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">2° de Bachillerato</option>
+                      <option value="3° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">3° de Bachillerato</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="apple-label">Paralelo:</label>
+                    <select id="a_est_paralelo" class="form-input-clean bg-transparent">
+                      <option value="A" class="dark:bg-[#1c1c1e]">A</option>
+                      <option value="B" class="dark:bg-[#1c1c1e]">B</option>
+                      <option value="C" class="dark:bg-[#1c1c1e]">C</option>
+                      <option value="D" class="dark:bg-[#1c1c1e]">D</option>
+                      <option value="E" class="dark:bg-[#1c1c1e]">E</option>
+                      <option value="F" class="dark:bg-[#1c1c1e]">F</option>
+                      <option value="ÚNICO" class="dark:bg-[#1c1c1e]">ÚNICO</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div><label class="apple-label">Grupo Étnico:</label><input type="text" id="a_est_etnico" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Teléfono:</label><input type="tel" id="a_est_tel" class="form-input-clean font-mono"></div>
+              <div><label class="apple-label">Celular:</label><input type="tel" id="a_est_cel" class="form-input-clean font-mono"></div>
+              <div class="sm:col-span-2 md:col-span-3"><label class="apple-label">Domicilio:</label><input type="text" id="a_est_domicilio" class="form-input-clean uppercase"></div>
+            </div>
+
+            <!-- Croquis Studio in Admin Modal -->
+            <div class="pt-3 border-t border-[var(--apple-border)]">
+              <div class="flex items-center justify-between mb-2">
+                <label class="font-bold">Croquis Domiciliario:</label>
+                <label class="cursor-pointer text-[var(--apple-blue)] font-semibold text-xs">
+                  📁 Cargar imagen
+                  <input type="file" id="a-croquis-file" accept="image/*" class="hidden">
+                </label>
+              </div>
+              
+              <div class="bg-[var(--apple-input-bg)] p-1.5 rounded-2xl flex flex-wrap items-center gap-1 mb-2 text-xs">
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-primary py-1 px-2.5 text-xs" data-tool="pen">&#128394;&#65039; Lápiz</button>
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="line">&#128207; Línea</button>
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="rect">&#9634; Manzana</button>
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="text">&#128293; Texto</button>
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="eraser">&#129529; Borrador</button>
+                <div class="h-4 w-px bg-[var(--apple-border)] mx-1"></div>
+                <button type="button" id="a-btn-undo" class="apple-btn apple-btn-secondary py-1 px-2 text-xs">&#8617;&#65039; Deshacer</button>
+                <button type="button" id="a-btn-clear" class="apple-btn apple-btn-danger py-1 px-2 text-xs ml-auto">&#128465;&#65039; Limpiar</button>
+              </div>
+              <div class="canvas-studio-container">
+                <canvas id="adminCroquisCanvas" width="460" height="180" class="w-full h-auto bg-white block"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Datos Familiares -->
+          <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
+            <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-purple)]">
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-purple)]"></span> 2. Datos Familiares
+            </h4>
+            <div class="space-y-3">
+              <div>
+                <p class="font-bold text-[var(--apple-pink)] mb-1">Madre:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                  <div class="sm:col-span-2"><input type="text" id="a_m_nom" class="form-input-clean uppercase" placeholder="Nombres Madre"></div>
+                  <div><input type="number" id="a_m_edad" class="form-input-clean" placeholder="Edad"></div>
+                  <div>
+                    <select id="a_m_ec" class="form-input-clean bg-transparent">
+                      <option value="">Est. Civil</option>
+                      <option value="SOLTERA" class="dark:bg-[#1c1c1e]">Soltera</option>
+                      <option value="CASADA" class="dark:bg-[#1c1c1e]">Casada</option>
+                      <option value="DIVORCIADA" class="dark:bg-[#1c1c1e]">Divorciada</option>
+                      <option value="VIUDA" class="dark:bg-[#1c1c1e]">Viuda</option>
+                      <option value="UNIÓN LIBRE" class="dark:bg-[#1c1c1e]">Unión Libre</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select id="a_m_inst" class="form-input-clean bg-transparent">
+                      <option value="">Instrucción</option>
+                      <option value="SIN INSTRUCCIÓN" class="dark:bg-[#1c1c1e]">Sin instrucción</option>
+                      <option value="PRIMARIA" class="dark:bg-[#1c1c1e]">Primaria</option>
+                      <option value="BÁSICA" class="dark:bg-[#1c1c1e]">Básica</option>
+                      <option value="BACHILLERATO" class="dark:bg-[#1c1c1e]">Bachillerato</option>
+                      <option value="SUPERIOR" class="dark:bg-[#1c1c1e]">Superior</option>
+                      <option value="POSGRADO" class="dark:bg-[#1c1c1e]">Posgrado</option>
+                    </select>
+                  </div>
+                  <div><input type="text" id="a_m_prof" class="form-input-clean uppercase" placeholder="Profesión"></div>
+                  <div><input type="text" id="a_m_trab" class="form-input-clean uppercase" placeholder="Lugar Trabajo"></div>
+                  <div><input type="tel" id="a_m_tel" class="form-input-clean font-mono" placeholder="Teléfonos"></div>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-bold text-[var(--apple-blue)] mb-1">Padre:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                  <div class="sm:col-span-2"><input type="text" id="a_p_nom" class="form-input-clean uppercase" placeholder="Nombres Padre"></div>
+                  <div><input type="number" id="a_p_edad" class="form-input-clean" placeholder="Edad"></div>
+                  <div>
+                    <select id="a_p_ec" class="form-input-clean bg-transparent">
+                      <option value="">Est. Civil</option>
+                      <option value="SOLTERO" class="dark:bg-[#1c1c1e]">Soltero</option>
+                      <option value="CASADO" class="dark:bg-[#1c1c1e]">Casado</option>
+                      <option value="DIVORCIADO" class="dark:bg-[#1c1c1e]">Divorciado</option>
+                      <option value="VIUDO" class="dark:bg-[#1c1c1e]">Viudo</option>
+                      <option value="UNIÓN LIBRE" class="dark:bg-[#1c1c1e]">Unión Libre</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select id="a_p_inst" class="form-input-clean bg-transparent">
+                      <option value="">Instrucción</option>
+                      <option value="SIN INSTRUCCIÓN" class="dark:bg-[#1c1c1e]">Sin instrucción</option>
+                      <option value="PRIMARIA" class="dark:bg-[#1c1c1e]">Primaria</option>
+                      <option value="BÁSICA" class="dark:bg-[#1c1c1e]">Básica</option>
+                      <option value="BACHILLERATO" class="dark:bg-[#1c1c1e]">Bachillerato</option>
+                      <option value="SUPERIOR" class="dark:bg-[#1c1c1e]">Superior</option>
+                      <option value="POSGRADO" class="dark:bg-[#1c1c1e]">Posgrado</option>
+                    </select>
+                  </div>
+                  <div><input type="text" id="a_p_prof" class="form-input-clean uppercase" placeholder="Profesión"></div>
+                  <div><input type="text" id="a_p_trab" class="form-input-clean uppercase" placeholder="Lugar Trabajo"></div>
+                  <div><input type="tel" id="a_p_tel" class="form-input-clean font-mono" placeholder="Teléfonos"></div>
+                </div>
+              </div>
+
+              <div>
+                <p class="font-bold text-[var(--apple-green)] mb-1">Representante Legal:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                  <div class="sm:col-span-2"><input type="text" id="a_r_nom" class="form-input-clean uppercase" placeholder="Nombres Representante"></div>
+                  <div>
+                    <select id="a_r_par" class="form-input-clean bg-transparent">
+                      <option value="">Parentesco...</option>
+                      <option value="MADRE" class="dark:bg-[#1c1c1e]">Madre</option>
+                      <option value="PADRE" class="dark:bg-[#1c1c1e]">Padre</option>
+                      <option value="ABUELO/A" class="dark:bg-[#1c1c1e]">Abuelo/a</option>
+                      <option value="TÍO/A" class="dark:bg-[#1c1c1e]">Tío/a</option>
+                      <option value="HERMANO/A" class="dark:bg-[#1c1c1e]">Hermano/a</option>
+                      <option value="TUTOR LEGAL" class="dark:bg-[#1c1c1e]">Tutor Legal</option>
+                      <option value="OTRO" class="dark:bg-[#1c1c1e]">Otro</option>
+                    </select>
+                  </div>
+                  <div><input type="number" id="a_r_edad" class="form-input-clean" placeholder="Edad"></div>
+                  <div>
+                    <select id="a_r_ec" class="form-input-clean bg-transparent">
+                      <option value="">Est. Civil</option>
+                      <option value="SOLTERO/A" class="dark:bg-[#1c1c1e]">Soltero/a</option>
+                      <option value="CASADO/A" class="dark:bg-[#1c1c1e]">Casado/a</option>
+                      <option value="DIVORCIADO/A" class="dark:bg-[#1c1c1e]">Divorciado/a</option>
+                      <option value="VIUDO/A" class="dark:bg-[#1c1c1e]">Viudo/a</option>
+                      <option value="UNIÓN LIBRE" class="dark:bg-[#1c1c1e]">Unión Libre</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select id="a_r_inst" class="form-input-clean bg-transparent">
+                      <option value="">Instrucción</option>
+                      <option value="SIN INSTRUCCIÓN" class="dark:bg-[#1c1c1e]">Sin instrucción</option>
+                      <option value="PRIMARIA" class="dark:bg-[#1c1c1e]">Primaria</option>
+                      <option value="BÁSICA" class="dark:bg-[#1c1c1e]">Básica</option>
+                      <option value="BACHILLERATO" class="dark:bg-[#1c1c1e]">Bachillerato</option>
+                      <option value="SUPERIOR" class="dark:bg-[#1c1c1e]">Superior</option>
+                      <option value="POSGRADO" class="dark:bg-[#1c1c1e]">Posgrado</option>
+                    </select>
+                  </div>
+                  <div><input type="text" id="a_r_prof" class="form-input-clean uppercase" placeholder="Profesión"></div>
+                  <div><input type="text" id="a_r_trab" class="form-input-clean uppercase" placeholder="Lugar Trabajo"></div>
+                  <div><input type="tel" id="a_r_tel" class="form-input-clean font-mono" placeholder="Teléfonos"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Socioeconómico, Salud y Académico -->
+          <!-- Section 3: Socioeconómico y Servicios -->
+          <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
+            <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-orange)]">
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-orange)]"></span> 3. Referencias Socioeconómicas y Servicios
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div><label class="apple-label">Ingresos Totales ($):</label><input type="number" id="a_ing_total" class="form-input-clean font-mono"></div>
+              <div><label class="apple-label">Egresos Totales ($):</label><input type="number" id="a_egr_total" class="form-input-clean font-mono"></div>
+              <div><label class="apple-label">Préstamos recibidos:</label><input type="text" id="a_socio_prestamos" class="form-input-clean uppercase"></div>
+              
+              <!-- Housing & Basic Services -->
+              <div class="sm:col-span-2 md:col-span-3 pt-2">
+                <label class="apple-label font-bold text-[var(--apple-blue)] mb-1">Condiciones de Vivienda:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_propia" value="Propia"> <span>Propia</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_arrendada" value="Arrendada"> <span>Arrendada</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_anticresis" value="Anticresis"> <span>Anticresis</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_prestada" value="Prestada"> <span>Prestada</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_compartida" value="Compartida"> <span>Compartida</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_prestamo" value="Con préstamo"> <span>Con préstamo</span></label>
+                </div>
+              </div>
+
+              <div class="sm:col-span-2 md:col-span-3 pt-2">
+                <label class="apple-label font-bold text-[var(--apple-green)] mb-1">Servicios Básicos:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_luz" value="Luz eléctrica"> <span>Luz</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_agua" value="Agua potable"> <span>Agua</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_sshh" value="SSHH"> <span>SSHH</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_pozo" value="Pozo séptico"> <span>Pozo</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_tel" value="Teléfono"> <span>Teléfono</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_cel" value="Celular"> <span>Celular</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_net" value="Internet"> <span>Internet</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_cable" value="Cable"> <span>Cable</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_comp" value="Computador"> <span>Computador</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_lap" value="Laptop"> <span>Laptop</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_tab" value="Tablet"> <span>Tablet</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_juegos" value="Video juegos"> <span>Video juegos</span></label>
+                </div>
+              </div>
+
+              <!-- Health & Medical Attendance -->
+              <div><label class="apple-label">¿Discapacidad?:</label><select id="a_salud_disc" class="form-input-clean"><option value="No" class="dark:bg-[#1c1c1e]">No</option><option value="Sí" class="dark:bg-[#1c1c1e]">Sí</option></select></div>
+              <div><label class="apple-label">Tipo / % Discapacidad:</label><input type="text" id="a_salud_disc_tipo" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Condición médica:</label><input type="text" id="a_salud_cond" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Alergias:</label><input type="text" id="a_salud_alergias" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Medicamentos:</label><input type="text" id="a_salud_meds" class="form-input-clean uppercase"></div>
+              
+              <div class="sm:col-span-2 md:col-span-3 pt-2">
+                <label class="apple-label font-bold text-[var(--apple-pink)] mb-1">El estudiante recibe atención médica en:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_centro" value="Centro de salud"> <span>Centro de salud</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_subcentro" value="Subcentro de salud"> <span>Subcentro</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_hospital" value="Hospital público"> <span>Hospital público</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_clinica" value="Clínica privada"> <span>Clínica privada</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Datos Académicos (Punto 6) -->
+          <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
+            <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-blue)]">
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-blue)]"></span> 4. Datos Académicos / Rendimiento Escolar (Punto 6)
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div><label class="apple-label">Fecha Ingreso:</label><input type="date" id="a_acad_fecha_ingreso" class="form-input-clean"></div>
+              <div class="sm:col-span-2"><label class="apple-label">Institución procedencia:</label><input type="text" id="a_acad_inst" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">¿Repetido años?:</label><select id="a_acad_rep" class="form-input-clean"><option value="No">No</option><option value="Sí">Sí</option></select></div>
+              <div class="sm:col-span-2"><label class="apple-label">¿Cuáles años?:</label><input type="text" id="a_acad_anios_rep" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Asignaturas preferencia:</label><input type="text" id="a_acad_pref" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Asignaturas dificultad:</label><input type="text" id="a_acad_dif" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Dignidades alcanzadas:</label><input type="text" id="a_acad_dignidades" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Logros académicos:</label><input type="text" id="a_acad_logros" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Participación en:</label><input type="text" id="a_acad_participacion" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Clubes:</label><input type="text" id="a_acad_clubes" class="form-input-clean uppercase"></div>
+              <div class="sm:col-span-2"><label class="apple-label">Extracurriculares:</label><input type="text" id="a_acad_extracurriculares" class="form-input-clean uppercase"></div>
+            </div>
+          </div>
+
+          <!-- Section 5: Historia Vital, Antecedentes y Entorno (Punto 7) -->
+          <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
+            <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-purple)]">
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-purple)]"></span> 5. Historia Vital, Antecedentes y Entorno (Punto 7)
+            </h4>
+            
+            <p class="font-bold text-[var(--apple-pink)] mb-1">Embarazo y Parto:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+              <div><label class="apple-label">Edad madre al nacer:</label><input type="number" id="a_hist_edad_madre" class="form-input-clean"></div>
+              <div><label class="apple-label">Accidentes embarazo:</label><input type="text" id="a_hist_acc_embarazo" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Medicamentos embarazo:</label><input type="text" id="a_hist_meds_embarazo" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">¿Cuáles medicamentos?:</label><input type="text" id="a_hist_meds_cuales" class="form-input-clean uppercase"></div>
+              <div class="sm:col-span-2 md:col-span-4">
+                <label class="apple-label font-bold mb-1">Tipo de Parto:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_termino" value="al término"> <span>Al término</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_prematuro" value="Prematuro"> <span>Prematuro</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_cesarea" value="Cesárea"> <span>Cesárea</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_normal" value="Parto normal"> <span>Parto normal</span></label>
+                </div>
+              </div>
+              <div class="sm:col-span-2 md:col-span-4"><label class="apple-label">Otras dificultades en embarazo:</label><input type="text" id="a_hist_dif_embarazo" class="form-input-clean uppercase"></div>
+            </div>
+
+            <p class="font-bold text-[var(--apple-blue)] mt-3 mb-1">Datos de la Recién Nacida / Recién Nacido:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+              <div><label class="apple-label">Peso al nacer:</label><input type="text" id="a_hist_peso_nacer" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Talla al nacer:</label><input type="text" id="a_hist_talla_nacer" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Edad empezó a caminar:</label><input type="text" id="a_hist_edad_caminar" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Edad habló 1ra vez:</label><input type="text" id="a_hist_edad_hablo" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Periodo lactancia:</label><input type="text" id="a_hist_lactancia" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Edad usó biberón:</label><input type="text" id="a_hist_edad_biberon" class="form-input-clean uppercase"></div>
+              <div class="sm:col-span-2"><label class="apple-label">Edad control esfínteres:</label><input type="text" id="a_hist_edad_esfinteres" class="form-input-clean uppercase"></div>
+            </div>
+
+            <p class="font-bold text-[var(--apple-orange)] mt-3 mb-1">Enfermedades e Infancia:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+              <div><label class="apple-label">Enfermedades:</label><input type="text" id="a_hist_enf_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Accidentes:</label><input type="text" id="a_hist_acc_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Alergias:</label><input type="text" id="a_hist_alergias_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Cirugías:</label><input type="text" id="a_hist_cirugias_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Pérdidas conocimiento:</label><input type="text" id="a_hist_perdidas_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Otros aspectos:</label><input type="text" id="a_hist_otros_salud_desc" class="form-input-clean uppercase"></div>
+            </div>
+
+            <p class="font-bold text-[var(--apple-purple)] mt-3 mb-1">Antecedentes Patológicos Familiares:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_obesidad" value="Obesidad"> <span>Obesidad</span></label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_cardiacas" value="Enfermedades cardiacas"> <span>Enf. cardiacas</span></label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_hipertension" value="Hipertensión"> <span>Hipertensión</span></label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_diabetes" value="Diabetes"> <span>Diabetes</span></label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_mentales" value="Enfermedades mentales"> <span>Enf. mentales</span></label>
+            </div>
+            <div class="mt-2"><label class="apple-label">Otros antecedentes patológicos:</label><input type="text" id="a_patol_otros" class="form-input-clean uppercase"></div>
+
+            <p class="font-bold text-[var(--apple-green)] mt-3 mb-1">Relación con su Entorno Familiar:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div><label class="apple-label">Padre:</label><input type="text" id="a_entorno_rel_padre" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Madre:</label><input type="text" id="a_entorno_rel_madre" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Hermanos:</label><input type="text" id="a_entorno_rel_hermanos" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Otros en el hogar:</label><input type="text" id="a_entorno_rel_otros" class="form-input-clean uppercase"></div>
+            </div>
+
+            <div class="mt-2"><label class="apple-label">Costumbres / Hábitos:</label><textarea id="a_habitos" rows="2" class="form-input-clean"></textarea></div>
+            <div class="mt-2"><label class="apple-label">Firma C.I.:</label><input type="text" id="a_firma_ci" class="form-input-clean font-mono"></div>
+          </div>
+
+          <!-- Save Button -->
+          <div class="flex justify-end gap-2.5 pt-3 border-t border-[var(--apple-border)]">
+            <button type="button" onclick="closeEditorModal()" class="apple-btn apple-btn-secondary text-xs">
+              Cancelar
+            </button>
+            <button type="submit" id="btn-save-edit" class="apple-btn apple-btn-success text-xs">
+              💾 Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="modalChangePass" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="apple-modal-card max-w-sm w-full p-6 animate-apple-modal">
+      <div class="flex items-center justify-between pb-3 border-b border-[var(--apple-border)]">
+        <h3 class="text-sm font-bold">Cambiar Contraseña Admin</h3>
+        <button type="button" onclick="document.getElementById('modalChangePass').classList.add('hidden')" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] text-lg leading-none">&times;</button>
+      </div>
+      <form id="formChangePass" class="mt-4 space-y-3 text-xs">
+        <div id="cp_error" class="text-[var(--apple-red)] bg-[var(--apple-red)]/10 p-2.5 rounded-xl hidden"></div>
+        <div>
+          <label class="block apple-label mb-1">Contraseña Actual:</label>
+          <input type="password" id="cp_current" required class="form-input-clean">
+        </div>
+        <div>
+          <label class="block apple-label mb-1">Nueva Contraseña:</label>
+          <input type="password" id="cp_new" required minlength="6" class="form-input-clean">
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-[var(--apple-border)]">
+          <button type="button" onclick="document.getElementById('modalChangePass').classList.add('hidden')" class="apple-btn apple-btn-secondary text-xs">Cancelar</button>
+          <button type="submit" class="apple-btn apple-btn-primary text-xs">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal for Croquis Text insertion -->
+  <div id="croquisTextModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="apple-modal-card max-w-sm w-full p-6 animate-apple-modal">
+      <div class="flex items-center justify-between pb-3 border-b border-[var(--apple-border)]">
+        <h3 class="text-sm font-bold flex items-center gap-2">
+          <span class="w-6 h-6 rounded-lg bg-[var(--apple-blue)]/10 text-[var(--apple-blue)] flex items-center justify-center text-xs">&#128293;</span> Insertar Texto en Croquis
+        </h3>
+        <button type="button" class="btn-croquis-text-cancel text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] p-1 text-lg leading-none">&times;</button>
+      </div>
+      <div class="mt-4 space-y-3">
+        <div>
+          <label class="block apple-label mb-1">Texto (calle, referencia):</label>
+          <input type="text" class="croquis-text-input w-full form-input-clean" placeholder="Ej: Av. Principal / Calle 10">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block apple-label mb-1">Tamaño:</label>
+            <select class="croquis-text-size w-full form-input-clean text-xs">
+              <option value="10" class="dark:bg-[#1c1c1e]">10px - Pequeño</option>
+              <option value="12" selected class="dark:bg-[#1c1c1e]">12px - Normal</option>
+              <option value="14" class="dark:bg-[#1c1c1e]">14px - Mediano</option>
+              <option value="16" class="dark:bg-[#1c1c1e]">16px - Grande</option>
+            </select>
+          </div>
+          <div>
+            <label class="block apple-label mb-1">Color:</label>
+            <input type="color" class="croquis-text-color h-9 w-full rounded-xl border border-[var(--apple-border)] cursor-pointer" value="#000000">
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 flex gap-2 justify-end pt-3 border-t border-[var(--apple-border)]">
+        <button type="button" class="btn-croquis-text-cancel apple-btn apple-btn-secondary text-xs">Cancelar</button>
+        <button type="button" class="btn-croquis-text-add apple-btn apple-btn-primary text-xs">Insertar Texto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom In-App Modal for Alerts & Confirmations -->
+  <div id="customDialogModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="apple-modal-card max-w-md w-full p-6 animate-apple-modal">
+      <div class="flex items-start gap-4">
+        <div id="dialog-icon-container" class="w-11 h-11 rounded-2xl bg-[var(--apple-blue)]/10 text-[var(--apple-blue)] flex items-center justify-center flex-shrink-0 text-xl font-bold">
+          <span id="dialog-icon">&#128196;</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h3 id="dialog-title" class="text-base font-bold leading-tight">Confirmación</h3>
+          <div id="dialog-message" class="apple-caption text-xs mt-1.5 leading-relaxed text-[var(--apple-text-secondary)]">¿Desea continuar con esta acción?</div>
+        </div>
+      </div>
+      <div class="mt-6 flex items-center justify-end gap-2.5 pt-3 border-t border-[var(--apple-border)]">
+        <button type="button" id="dialog-btn-cancel" class="apple-btn apple-btn-secondary text-xs">Cancelar</button>
+        <button type="button" id="dialog-btn-confirm" class="apple-btn apple-btn-primary text-xs">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/dialogs.js"></script>
+  <script src="/js/croquis.js"></script>
+  <script src="/js/pdf-generator.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

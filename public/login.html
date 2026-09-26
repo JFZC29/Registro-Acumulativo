@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Administrativo - DECE Registro Acumulativo</title>
+  <script src="/js/theme.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {}
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="min-h-full flex items-center justify-center p-4 sm:p-6 antialiased">
+
+  <div class="w-full max-w-md apple-modal-card p-8 sm:p-10 animate-apple-modal relative">
+    
+    <div class="absolute top-4 right-4">
+      <button type="button" class="btn-theme-toggle" title="Cambiar tema">
+        <span class="theme-icon text-sm">&#127769;</span>
+      </button>
+    </div>
+
+    <div class="text-center mb-6">
+      <div class="inline-block bg-white p-3 rounded-2xl shadow-sm border border-black/5 mb-3">
+        <img src="/img/logo.png" alt="Logo Institucional" class="h-12 sm:h-14 w-auto max-w-[220px] mx-auto object-contain">
+      </div>
+      <h2 class="apple-title-display text-xl font-bold">Acceso Administrativo</h2>
+      <p class="apple-caption mt-1">Departamento de Consejería Estudiantil (DECE)</p>
+    </div>
+
+    <form id="loginForm" class="space-y-4 text-xs">
+      <div id="login-error" class="hidden p-3 bg-[var(--apple-red)]/10 text-[var(--apple-red)] rounded-xl text-xs font-semibold"></div>
+
+      <div>
+        <label class="block apple-label mb-1.5">Usuario Administrador:</label>
+        <input type="text" id="username" required class="form-input-clean text-sm" placeholder="admin">
+      </div>
+
+      <div>
+        <label class="block apple-label mb-1.5">Contraseña:</label>
+        <input type="password" id="password" required class="form-input-clean text-sm" placeholder="••••••••">
+      </div>
+
+      <button type="submit" id="btn-login" class="w-full apple-btn apple-btn-primary py-3 text-sm font-bold mt-2">
+        Iniciar Sesión
+      </button>
+
+      <div class="pt-4 text-center border-t border-[var(--apple-border)]">
+        <a href="/" class="apple-caption hover:text-[var(--apple-blue)] font-semibold transition">
+          &#8592; Regresar al Formulario de Registro
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+      const btn = document.getElementById('btn-login');
+      const err = document.getElementById('login-error');
+
+      btn.disabled = true;
+      btn.textContent = 'Verificando...';
+      err.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Credenciales incorrectas');
+
+        localStorage.setItem('dece_admin_token', data.token);
+        localStorage.setItem('dece_admin_user', JSON.stringify(data.user));
+        window.location.href = '/admin.html';
+      } catch (e) {
+        err.textContent = e.message;
+        err.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Iniciar Sesión';
+      }
+    });
+  </script>
+</body>
+</html>
