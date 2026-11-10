@@ -1,8 +1,8 @@
-window.handleAdminLogout = async function() {
+﻿window.handleAdminLogout = async function() {
   const confirmed = await window.showAppConfirm({
-    title: 'Cerrar Sesión',
-    message: '¿Está seguro de que desea cerrar la sesión del panel administrativo?',
-    confirmText: 'Cerrar Sesión',
+    title: 'Cerrar SesiÃ³n',
+    message: 'Â¿EstÃ¡ seguro de que desea cerrar la sesiÃ³n del panel administrativo?',
+    confirmText: 'Cerrar SesiÃ³n',
     cancelText: 'Cancelar',
     isWarning: true
   });
@@ -16,7 +16,7 @@ window.handleAdminLogout = async function() {
   }
 };
 
-﻿// Admin Panel Management Script
+ï»¿// Admin Panel Management Script
 let adminCroquis = null;
 let currentRecord = null;
 let currentPage = 1;
@@ -54,6 +54,36 @@ function getLocalRecords() {
 }
 
 function setLocalRecords(recs) {
+  try {
+    localStorage.setItem('dece_saved_records', JSON.stringify(recs));
+  } catch (e) {
+    console.warn('LocalStorage save error:', e);
+  }
+}
+
+async function initLocalRecords() {
+  let stored = getLocalRecords();
+  let seed = [];
+  try {
+    const res = await fetch('./data/records.json');
+    if (res.ok) {
+      seed = await res.json();
+      if (!Array.isArray(seed)) seed = [];
+    }
+  } catch (e) {
+    console.log('Seed records fetch error:', e);
+  }
+
+  const map = new Map();
+  stored.forEach(r => { if (r && r.id) map.set(r.id, r); });
+  seed.forEach(r => { if (r && r.id && !map.has(r.id)) map.set(r.id, r); });
+
+  const merged = Array.from(map.values());
+  setLocalRecords(merged);
+  return merged;
+}
+
+function setLocalRecords(recs) {
   localStorage.setItem('dece_saved_records', JSON.stringify(recs));
 }
 
@@ -69,7 +99,7 @@ async function checkAuth() {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     if (res.ok) {
-      const data = await res.json();
+      if (!res.ok) throw new Error('API Offline'); const data = await res.json();
       const display = document.getElementById('admin-user-display');
       if (display && data.user) display.textContent = data.user.name || data.user.username;
     } else {
@@ -90,17 +120,17 @@ async function loadStats() {
     const res = await fetch('/api/stats', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    const data = await res.json();
+    if (!res.ok) throw new Error('API Offline'); const data = await res.json();
     if (data.success && data.stats) stats = data.stats;
   } catch (err) {
     // Fallback local
-    const recs = getLocalRecords();
+    const recs = await initLocalRecords();
     const byCourse = {};
     let withDisability = 0;
     recs.forEach(r => {
       const c = r.identificacion?.curso || 'Sin especificar';
       byCourse[c] = (byCourse[c] || 0) + 1;
-      if (r.datos_salud?.discapacidad === 'Sí' || r.datos_salud?.discapacidad === 'SI') withDisability++;
+      if (r.datos_salud?.discapacidad === 'SÃ­' || r.datos_salud?.discapacidad === 'SI') withDisability++;
     });
     stats = {
       totalRecords: recs.length,
@@ -155,16 +185,16 @@ async function loadRecords(page = 1) {
     const res = await fetch(`/api/records?${params}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    const data = await res.json();
+    if (!res.ok) throw new Error('API Offline'); const data = await res.json();
     if (data.records) {
       records = data.records;
-      total = data.total;
-      totalPages = data.totalPages;
+      total = data.total || 0;
+      totalPages = data.totalPages || 1;
     } else {
       throw new Error('No records returned');
     }
   } catch (fetchErr) {
-    let all = getLocalRecords();
+    let all = await initLocalRecords();
     if (currentSearch) {
       const q = currentSearch.toLowerCase();
       all = all.filter(r => 
@@ -188,7 +218,7 @@ async function loadRecords(page = 1) {
         <td colspan="7" class="text-center py-12 text-slate-400">
           <div class="text-4xl mb-2">&#128237;</div>
           <p class="font-bold text-sm text-slate-600">No se encontraron registros</p>
-          <p class="text-xs text-slate-400 mt-0.5">Intente con otros términos de búsqueda o cree un nuevo registro.</p>
+          <p class="text-xs text-slate-400 mt-0.5">Intente con otros tÃ©rminos de bÃºsqueda o cree un nuevo registro.</p>
         </td>
       </tr>
     `;
@@ -200,8 +230,8 @@ async function loadRecords(page = 1) {
   records.forEach(record => {
       const ident = record.identificacion || {};
       const rep = record.datos_familiares?.representante || {};
-      const regDate = record.createdAt ? new Date(record.createdAt).toLocaleDateString() : 'N/A';
-      const hasDisc = record.datos_salud?.discapacidad === 'Sí' || record.datos_salud?.discapacidad === 'SI';
+      const regDate = record.createdAt ? new Date(record.createdAt).toLocaleDateString() : (record.created_at ? new Date(record.created_at).toLocaleDateString() : 'N/A');
+      const hasDisc = record.datos_salud?.discapacidad === 'SÃ­' || record.datos_salud?.discapacidad === 'SI';
       const studentName = ident.estudiante || 'Sin nombre';
       const initial = studentName.charAt(0).toUpperCase() || 'E';
 
@@ -219,14 +249,14 @@ async function loadRecords(page = 1) {
             </div>
           </div>
         </td>
-        <td class="py-3.5 px-3 font-mono font-medium text-slate-700">${ident.num_identificacion || '—'}</td>
+        <td class="py-3.5 px-3 font-mono font-medium text-slate-700">${ident.num_identificacion || 'â€”'}</td>
         <td class="py-3.5 px-3">
           <span class="inline-flex px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200/60">
-            ${ident.curso || '—'}
+            ${ident.curso || 'â€”'}
           </span>
         </td>
-        <td class="py-3.5 px-3 text-slate-700 font-medium">${rep.nombre || '—'}</td>
-        <td class="py-3.5 px-3 text-slate-600 font-mono text-[11px]">${ident.celular || ident.telefono || rep.telefonos || '—'}</td>
+        <td class="py-3.5 px-3 text-slate-700 font-medium">${rep.nombre || 'â€”'}</td>
+        <td class="py-3.5 px-3 text-slate-600 font-mono text-[11px]">${ident.celular || ident.telefono || rep.telefonos || 'â€”'}</td>
         <td class="py-3.5 px-3 text-slate-500 text-[11px]">${regDate}</td>
         <td class="py-3.5 px-4 text-center">
           <div class="inline-flex items-center gap-1.5">
@@ -256,16 +286,16 @@ async function loadRecords(page = 1) {
     });
 
     // Pagination Controls
-    document.getElementById('pagination-info').textContent = `Mostrando ${data.records.length} de ${data.total} registros (Página ${data.page} de ${data.totalPages})`;
-    document.getElementById('page-indicator').textContent = `Página ${data.page} de ${data.totalPages}`;
+    document.getElementById('pagination-info').textContent = `Mostrando ${records.length} de ${total} registros (PÃ¡gina ${page} de ${totalPages})`;
+    document.getElementById('page-indicator').textContent = `PÃ¡gina ${page} de ${totalPages}`;
 
     const prevBtn = document.getElementById('btn-prev-page');
     const nextBtn = document.getElementById('btn-next-page');
-    prevBtn.disabled = data.page <= 1;
-    nextBtn.disabled = data.page >= data.totalPages;
+    prevBtn.disabled = page <= 1;
+    nextBtn.disabled = page >= totalPages;
 
-    prevBtn.onclick = () => loadRecords(data.page - 1);
-    nextBtn.onclick = () => loadRecords(data.page + 1);
+    prevBtn.onclick = () => loadRecords(page - 1);
+    nextBtn.onclick = () => loadRecords(page + 1);
 
   } catch (err) {
     console.error('Error loading records:', err);
@@ -308,6 +338,65 @@ function setupAdminButtons() {
   // Logout
   const logoutBtn = document.getElementById('btn-logout'); if (logoutBtn) logoutBtn.onclick = () => window.handleAdminLogout();
 
+    // Export CSV
+  const exportBtn = document.getElementById('btn-export-csv') || document.querySelector('a[href="/api/export/csv"]');
+  if (exportBtn) {
+    exportBtn.removeAttribute('href');
+    exportBtn.style.cursor = 'pointer';
+    exportBtn.onclick = async (e) => {
+      e.preventDefault();
+      try {
+        const token = localStorage.getItem('dece_admin_token');
+        let records = [];
+        try {
+          const res = await fetch('/api/records?limit=1000', { headers: { 'Authorization': 'Bearer ' + token } });
+          if (res.ok) {
+            const data = await res.json();
+            records = data.records || [];
+          } else { throw new Error(); }
+        } catch (err) {
+          records = await initLocalRecords();
+        }
+
+        if (records.length === 0) {
+          window.showToast('No hay registros para exportar', 'warning');
+          return;
+        }
+
+        const headers = ['ID', 'Estudiante', 'Identificación', 'Fecha Nac.', 'Edad', 'Curso', 'Representante', 'Teléfono Rep.', 'Celular Est.', 'Fecha Registro'];
+        const csvRows = [headers.join(',')];
+
+        records.forEach(r => {
+          const id = r.id || '';
+          const est = (r.identificacion?.estudiante || '').replace(/"/g, '""');
+          const ci = (r.identificacion?.num_identificacion || '').replace(/"/g, '""');
+          const fn = (r.identificacion?.fecha_nacimiento || '').replace(/"/g, '""');
+          const ed = (r.identificacion?.edad || '').toString().replace(/"/g, '""');
+          const cur = (r.identificacion?.curso || '').replace(/"/g, '""');
+          const rep = (r.datos_familiares?.representante?.nombre || '').replace(/"/g, '""');
+          const repTel = (r.datos_familiares?.representante?.telefonos || '').replace(/"/g, '""');
+          const cel = (r.identificacion?.celular || '').replace(/"/g, '""');
+          const fReg = r.createdAt || r.created_at || '';
+
+          csvRows.push([`"${id}"`, `"${est}"`, `"${ci}"`, `"${fn}"`, `"${ed}"`, `"${cur}"`, `"${rep}"`, `"${repTel}"`, `"${cel}"`, `"${fReg}"`].join(','));
+        });
+
+        const blob = new Blob(["\uFEFF" + csvRows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `REGISTRO_BEI_EXPORT_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        window.showToast('Exportación CSV completada', 'success');
+      } catch (e) {
+        window.showToast('Error al exportar: ' + e.message, 'error');
+      }
+    };
+  }
+
   // Change Password Modal
   document.getElementById('btn-change-pass').onclick = () => {
     document.getElementById('modalChangePass').classList.remove('hidden');
@@ -332,10 +421,10 @@ function setupAdminButtons() {
         },
         body: JSON.stringify({ currentPassword: cur, newPassword: nw })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al cambiar contraseña');
+      if (!res.ok) throw new Error('API Offline'); const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al cambiar contraseÃ±a');
 
-      await window.showAppAlert('Contraseña Actualizada', 'La contraseña de administrador ha sido actualizada con éxito.', 'success');
+      await window.showAppAlert('ContraseÃ±a Actualizada', 'La contraseÃ±a de administrador ha sido actualizada con Ã©xito.', 'success');
       document.getElementById('modalChangePass').classList.add('hidden');
     } catch (err) {
       errDiv.textContent = err.message;
@@ -369,7 +458,7 @@ function setupAdminAgeCalculation() {
         age--;
       }
       if (age >= 0 && age < 120) {
-        ageInput.value = `${age} años`;
+        ageInput.value = `${age} aÃ±os`;
       }
     }
   };
@@ -418,7 +507,7 @@ function openEditModal(record) {
 
   if (record) {
     title.textContent = `Editar Registro: ${record.identificacion?.estudiante || ''}`;
-    subtitle.textContent = `ID: ${record.id} · Cédula: ${record.identificacion?.num_identificacion || ''}`;
+    subtitle.textContent = `ID: ${record.id} Â· CÃ©dula: ${record.identificacion?.num_identificacion || ''}`;
     pdfBtn.style.display = 'inline-flex';
     previewBtn.style.display = 'inline-flex';
     pdfBtn.onclick = () => PDFEngine.download(currentRecord);
@@ -428,7 +517,7 @@ function openEditModal(record) {
     fillEditorValues(record);
   } else {
     title.textContent = 'Crear Nuevo Registro Acumulativo';
-    subtitle.textContent = 'Ingrese la información completa para registrar al estudiante';
+    subtitle.textContent = 'Ingrese la informaciÃ³n completa para registrar al estudiante';
     pdfBtn.style.display = 'none';
     previewBtn.style.display = 'none';
     document.getElementById('edit_record_id').value = '';
@@ -542,15 +631,15 @@ async function saveEditorRecord() {
   if (document.getElementById('a_cond_anticresis')?.checked) condVivienda.push('Anticresis');
   if (document.getElementById('a_cond_prestada')?.checked) condVivienda.push('Prestada');
   if (document.getElementById('a_cond_compartida')?.checked) condVivienda.push('Compartida');
-  if (document.getElementById('a_cond_prestamo')?.checked) condVivienda.push('Con préstamo');
+  if (document.getElementById('a_cond_prestamo')?.checked) condVivienda.push('Con prÃ©stamo');
 
   // Collect Basic Services
   const servBasicos = [];
-  if (document.getElementById('a_serv_luz')?.checked) servBasicos.push('Luz eléctrica');
+  if (document.getElementById('a_serv_luz')?.checked) servBasicos.push('Luz elÃ©ctrica');
   if (document.getElementById('a_serv_agua')?.checked) servBasicos.push('Agua potable');
   if (document.getElementById('a_serv_sshh')?.checked) servBasicos.push('SSHH');
-  if (document.getElementById('a_serv_pozo')?.checked) servBasicos.push('Pozo séptico');
-  if (document.getElementById('a_serv_tel')?.checked) servBasicos.push('Teléfono');
+  if (document.getElementById('a_serv_pozo')?.checked) servBasicos.push('Pozo sÃ©ptico');
+  if (document.getElementById('a_serv_tel')?.checked) servBasicos.push('TelÃ©fono');
   if (document.getElementById('a_serv_cel')?.checked) servBasicos.push('Celular');
   if (document.getElementById('a_serv_net')?.checked) servBasicos.push('Internet');
   if (document.getElementById('a_serv_cable')?.checked) servBasicos.push('Cable');
@@ -563,14 +652,14 @@ async function saveEditorRecord() {
   const medAtencion = [];
   if (document.getElementById('a_med_centro')?.checked) medAtencion.push('Centro de salud');
   if (document.getElementById('a_med_subcentro')?.checked) medAtencion.push('Subcentro de salud');
-  if (document.getElementById('a_med_hospital')?.checked) medAtencion.push('Hospital público');
-  if (document.getElementById('a_med_clinica')?.checked) medAtencion.push('Clínica privada');
+  if (document.getElementById('a_med_hospital')?.checked) medAtencion.push('Hospital pÃºblico');
+  if (document.getElementById('a_med_clinica')?.checked) medAtencion.push('ClÃ­nica privada');
 
   // Collect Tipo de Parto
   const tipoParto = [];
-  if (document.getElementById('a_parto_termino')?.checked) tipoParto.push('al término');
+  if (document.getElementById('a_parto_termino')?.checked) tipoParto.push('al tÃ©rmino');
   if (document.getElementById('a_parto_prematuro')?.checked) tipoParto.push('Prematuro');
-  if (document.getElementById('a_parto_cesarea')?.checked) tipoParto.push('Cesárea');
+  if (document.getElementById('a_parto_cesarea')?.checked) tipoParto.push('CesÃ¡rea');
   if (document.getElementById('a_parto_normal')?.checked) tipoParto.push('Parto normal');
 
   const cursoVal = document.getElementById('a_est_curso')?.value || '';
@@ -739,7 +828,7 @@ async function saveEditorRecord() {
     window.showToast(err.message || 'Error al guardar', 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = '💾 Guardar Cambios';
+    btn.textContent = 'ðŸ’¾ Guardar Cambios';
   }
 }
 
@@ -747,7 +836,7 @@ async function saveEditorRecord() {
 async function deleteRecord(id, studentName) {
   const confirmed = await window.showAppConfirm({
     title: 'Eliminar Registro',
-    message: '¿Está seguro de eliminar permanentemente el registro de <b>' + (studentName || 'este estudiante') + '</b>?<br><br><span class="text-red-500 font-semibold">Esta acción no se puede deshacer.</span>',
+    message: 'Â¿EstÃ¡ seguro de eliminar permanentemente el registro de <b>' + (studentName || 'este estudiante') + '</b>?<br><br><span class="text-red-500 font-semibold">Esta acciÃ³n no se puede deshacer.</span>',
     confirmText: 'Eliminar Registro',
     cancelText: 'Cancelar',
     isDanger: true
@@ -776,3 +865,6 @@ async function deleteRecord(id, studentName) {
     window.showToast(err.message || 'Error al eliminar', 'error');
   }
 }
+
+
+
