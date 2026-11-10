@@ -17,6 +17,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="stylesheet" href="./css/pdf-format.css">
+  <script>
+    function handleAdminLogout() {
+      if (window.confirm('¿Desea cerrar la sesión del Panel Administrativo?')) {
+        try {
+          localStorage.removeItem('dece_admin_token');
+          localStorage.removeItem('dece_admin_user');
+        } catch (e) {}
+        window.location.replace('./login.html');
+      }
+    }
+  </script>
 </head>
 <body class="min-h-full flex flex-col antialiased selection:bg-[#0071e3] selection:text-white">
 
@@ -44,8 +55,8 @@
           <span id="cloud-status-text" class="text-emerald-700 dark:text-emerald-400 font-bold hidden sm:inline">Nube Activa</span>
         </button>
 
-        <a href="./index.html" target="_blank" class="apple-btn apple-btn-secondary text-xs">
-          <span>&#128279;</span> <span class="hidden sm:inline">Formulario PÃºblico</span>
+        <a href="./index.html" class="apple-btn apple-btn-secondary text-xs" title="Ir al Formulario Público de Registro">
+          <span>📋</span> <span class="hidden sm:inline">Formulario</span>
         </a>
 
         <div class="h-4 w-px bg-[var(--apple-border)] hidden sm:block"></div>
@@ -712,12 +723,12 @@
     <!-- Firebase Cloud SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="./js/firebase-config.js?v=4.1"></script>
+  <script src="./js/firebase-config.js?v=5.0"></script>
   <!-- Scripts -->
-  <script src="./js/dialogs.js?v=4.1"></script>
-  <script src="./js/croquis.js?v=4.1"></script>
-  <script src="./js/pdf-generator.js?v=4.1"></script>
-  <script src="./js/admin.js?v=4.1"></script>
+  <script src="./js/dialogs.js?v=5.0"></script>
+  <script src="./js/croquis.js?v=5.0"></script>
+  <script src="./js/pdf-generator.js?v=5.0"></script>
+  <script src="./js/admin.js?v=5.0"></script>
 </body>
 </html>
 
