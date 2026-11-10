@@ -62,6 +62,20 @@ function setLocalRecords(recs) {
 }
 
 async function initLocalRecords() {
+  // 1. Si Firebase está configurado, obtener registros directamente de la nube
+  if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+    try {
+      const cloudRecs = await window.FirebaseDB.getRecords();
+      if (cloudRecs && Array.isArray(cloudRecs) && cloudRecs.length > 0) {
+        setLocalRecords(cloudRecs);
+        return cloudRecs;
+      }
+    } catch (e) {
+      console.warn('Error al consultar nube Firebase, usando respaldo:', e);
+    }
+  }
+
+  // 2. Respaldo local combinado con registros base de la escuela
   let stored = getLocalRecords();
   let seed = [];
   try {
@@ -330,6 +344,82 @@ function setupSearchAndFilters() {
 
 // Admin Action Buttons
 function setupAdminButtons() {
+  // Cloud Database (Firebase) Controls
+  const cloudBtn = document.getElementById('btn-cloud-config');
+  const cloudModal = document.getElementById('modalCloudConfig');
+  const saveCloudBtn = document.getElementById('btn-save-cloud-config');
+
+  function updateCloudStatusUI() {
+    const isConf = window.FirebaseDB && window.FirebaseDB.isConfigured();
+    const ind = document.getElementById('cloud-indicator');
+    const txt = document.getElementById('cloud-status-text');
+    if (ind && txt) {
+      if (isConf) {
+        ind.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+        txt.textContent = 'Nube Activa';
+        txt.className = 'text-emerald-700 dark:text-emerald-400 font-bold hidden sm:inline';
+      } else {
+        ind.className = 'w-2 h-2 rounded-full bg-amber-500';
+        txt.textContent = 'Conectar Nube';
+        txt.className = 'text-amber-700 dark:text-amber-400 font-bold hidden sm:inline';
+      }
+    }
+  }
+  updateCloudStatusUI();
+
+  if (cloudBtn && cloudModal) {
+    cloudBtn.onclick = () => {
+      cloudModal.classList.remove('hidden');
+      const conf = (window.FirebaseDB && window.FirebaseDB.getConfig()) || {};
+      const urlInput = document.getElementById('fb_db_url');
+      const keyInput = document.getElementById('fb_api_key');
+      if (urlInput) urlInput.value = conf.databaseURL || '';
+      if (keyInput) keyInput.value = conf.apiKey || '';
+    };
+  }
+
+  if (saveCloudBtn) {
+    saveCloudBtn.onclick = async () => {
+      const dbUrl = document.getElementById('fb_db_url')?.value.trim();
+      const apiKey = document.getElementById('fb_api_key')?.value.trim();
+      if (!dbUrl) {
+        window.showToast('Ingrese la URL de la base de datos de Firebase', 'warning');
+        return;
+      }
+      const ok = window.FirebaseDB.saveConfig({ databaseURL: dbUrl, apiKey: apiKey });
+      if (ok) {
+        window.showToast('¡Base de datos conectada exitosamente!', 'success');
+        cloudModal.classList.add('hidden');
+        updateCloudStatusUI();
+        loadStats();
+        loadRecords(1);
+
+        // Activar escucha en tiempo real
+        if (window.FirebaseDB) {
+          window.FirebaseDB.onRecordsChange((newRecords) => {
+            if (newRecords && Array.isArray(newRecords)) {
+              setLocalRecords(newRecords);
+              loadStats();
+              loadRecords(currentPage);
+            }
+          });
+        }
+      } else {
+        window.showToast('Error al inicializar con los datos proporcionados', 'error');
+      }
+    };
+  }
+
+  // Escucha en tiempo real si ya está configurado
+  if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+    window.FirebaseDB.onRecordsChange((newRecords) => {
+      if (newRecords && Array.isArray(newRecords)) {
+        setLocalRecords(newRecords);
+        loadStats();
+        loadRecords(currentPage);
+      }
+    });
+  }
   // New Record
   document.getElementById('btn-admin-new').onclick = () => {
     openEditModal(null); // Create new
@@ -818,6 +908,12 @@ async function saveEditorRecord() {
         recs.unshift(payload);
       }
       setLocalRecords(recs);
+      if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+        try {
+          const saveItem = id ? (recs.find(r => r.id === id) || payload) : payload;
+          window.FirebaseDB.saveRecord(saveItem);
+        } catch (e) {}
+      }
     }
 
     window.showToast('Registro guardado exitosamente', 'success');
@@ -856,6 +952,15 @@ async function deleteRecord(id, studentName) {
       let recs = getLocalRecords();
       recs = recs.filter(r => r.id !== id);
       setLocalRecords(recs);
+      if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+        try { window.FirebaseDB.deleteRecord(id); } catch (e) {}
+      }
+      if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+        try {
+          const saveItem = id ? (recs.find(r => r.id === id) || payload) : payload;
+          window.FirebaseDB.saveRecord(saveItem);
+        } catch (e) {}
+      }
     }
 
     window.showToast('Registro eliminado correctamente', 'success');
@@ -865,6 +970,8 @@ async function deleteRecord(id, studentName) {
     window.showToast(err.message || 'Error al eliminar', 'error');
   }
 }
+
+
 
 
 

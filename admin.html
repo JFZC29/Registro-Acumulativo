@@ -39,6 +39,11 @@
           <span class="theme-icon text-sm leading-none">&#127769;</span>
         </button>
 
+                <button type="button" id="btn-cloud-config" class="apple-btn apple-btn-secondary text-xs flex items-center gap-1.5" title="Configuración de Base de Datos en la Nube">
+          <span id="cloud-indicator" class="w-2 h-2 rounded-full bg-amber-500"></span>
+          <span id="cloud-status-text" class="hidden sm:inline font-semibold">Conectar Nube</span>
+        </button>
+
         <a href="./index.html" target="_blank" class="apple-btn apple-btn-secondary text-xs">
           <span>&#128279;</span> <span class="hidden sm:inline">Formulario PÃºblico</span>
         </a>
@@ -633,6 +638,58 @@
     </div>
   </div>
 
+    <!-- Modal Cloud Database Configuration (Firebase) -->
+  <div id="modalCloudConfig" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="apple-modal-card max-w-lg w-full p-6 animate-apple-modal">
+      <div class="flex items-start justify-between pb-4 border-b border-[var(--apple-border)]">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl font-bold">
+            ☁️
+          </div>
+          <div>
+            <h3 class="text-base font-bold">Base de Datos en la Nube (Firebase)</h3>
+            <p class="apple-caption text-xs">Sincronización en tiempo real entre celulares y computadoras</p>
+          </div>
+        </div>
+        <button type="button" onclick="document.getElementById('modalCloudConfig').classList.add('hidden')" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] text-xl p-1 leading-none">&times;</button>
+      </div>
+
+      <div class="mt-4 space-y-3.5 text-xs">
+        <div class="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-xl text-blue-900 dark:text-blue-200 leading-relaxed">
+          <p class="font-bold mb-1">¿Para qué sirve esto?</p>
+          Permite que cuando los padres de familia llenen el formulario desde sus teléfonos celulares en sus casas, los registros aparezcan <b>de inmediato</b> en este panel de administración.
+        </div>
+
+        <div>
+          <label class="block apple-label mb-1">URL de Firebase Realtime Database (*):</label>
+          <input type="url" id="fb_db_url" class="form-input-clean text-xs font-mono" placeholder="https://mi-escuela-default-rtdb.firebaseio.com">
+          <p class="text-[10px] text-[var(--apple-text-secondary)] mt-1">Copia la URL de tu base de datos de Firebase.</p>
+        </div>
+
+        <div>
+          <label class="block apple-label mb-1">API Key (Opcional):</label>
+          <input type="text" id="fb_api_key" class="form-input-clean text-xs font-mono" placeholder="AIzaSy...">
+        </div>
+
+        <div class="pt-2 text-[11px] text-[var(--apple-text-secondary)] space-y-1 bg-[var(--apple-input-bg)] p-3 rounded-xl border border-[var(--apple-border)]">
+          <p class="font-bold text-[var(--apple-text-primary)]">Pasos rápidos para crear tu base de datos gratis (2 min):</p>
+          <ol class="list-decimal pl-4 space-y-0.5">
+            <li>Entra a <a href="https://console.firebase.google.com" target="_blank" class="text-blue-500 underline font-bold">console.firebase.google.com</a> con tu cuenta de Google.</li>
+            <li>Haz clic en <b>Crear proyecto</b> (ej: <i>Escuela Padre Otto Acosta</i>).</li>
+            <li>En el menú izquierdo ve a <b>Compilación &gt; Realtime Database &gt; Crear base de datos</b>.</li>
+            <li>Elige <b>Modo de prueba</b> (permite lectura y escritura) y copia el enlace web que te da arriba.</li>
+            <li>Pégalo aquí y presiona <b>Guardar y Conectar</b>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-center justify-end gap-2.5 pt-3 border-t border-[var(--apple-border)]">
+        <button type="button" onclick="document.getElementById('modalCloudConfig').classList.add('hidden')" class="apple-btn apple-btn-secondary text-xs">Cancelar</button>
+        <button type="button" id="btn-save-cloud-config" class="apple-btn apple-btn-primary text-xs font-bold">💾 Guardar y Conectar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Custom In-App Modal for Alerts & Confirmations -->
   <div id="customDialogModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="apple-modal-card max-w-md w-full p-6 animate-apple-modal">
@@ -652,6 +709,10 @@
     </div>
   </div>
 
+    <!-- Firebase Cloud SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="./js/firebase-config.js?v=2.2"></script>
   <!-- Scripts -->
   <script src="./js/dialogs.js"></script>
   <script src="./js/croquis.js"></script>
@@ -659,4 +720,5 @@
   <script src="./js/admin.js?v=2.1"></script>
 </body>
 </html>
+
 
