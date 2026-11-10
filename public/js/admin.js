@@ -1,18 +1,28 @@
 ﻿window.handleAdminLogout = async function() {
-  const confirmed = await window.showAppConfirm({
-    title: 'Cerrar SesiÃ³n',
-    message: 'Â¿EstÃ¡ seguro de que desea cerrar la sesiÃ³n del panel administrativo?',
-    confirmText: 'Cerrar SesiÃ³n',
-    cancelText: 'Cancelar',
-    isWarning: true
-  });
+  let confirmed = true;
+  if (typeof window.showAppConfirm === 'function') {
+    try {
+      confirmed = await window.showAppConfirm({
+        title: 'Cerrar Sesión',
+        message: '¿Está seguro de que desea cerrar la sesión del panel administrativo?',
+        confirmText: 'Cerrar Sesión',
+        cancelText: 'Cancelar',
+        isWarning: true
+      });
+    } catch (e) {
+      confirmed = confirm('¿Está seguro de que desea cerrar la sesión?');
+    }
+  } else {
+    confirmed = confirm('¿Está seguro de que desea cerrar la sesión?');
+  }
+
   if (confirmed) {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch (e) {}
     localStorage.removeItem('dece_admin_token');
     localStorage.removeItem('dece_admin_user');
-    window.location.href = '/login.html';
+    window.location.href = './login.html';
   }
 };
 

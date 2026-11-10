@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Administrativo - Sistema BEI | Escuela de Educación Básica Fiscomisional Padre Otto Acosta</title>
+  <title>Panel Administrativo - Sistema BEI | Escuela de EducaciÃ³n BÃ¡sica Fiscomisional Padre Otto Acosta</title>
   <script src="./js/theme.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -28,8 +28,8 @@
           <img src="./img/logo.png" alt="Logo Institucional" class="h-8 sm:h-9 w-auto max-w-[150px] object-contain">
         </div>
         <div class="border-l border-[var(--apple-border)] pl-3 sm:pl-4 hidden sm:block">
-          <h1 class="text-xs sm:text-sm font-bold leading-tight">ESCUELA DE EDUCACIÓN BÁSICA FISCOMISIONAL PADRE OTTO ACOSTA</h1>
-          <p class="text-[11px] text-[var(--apple-text-secondary)]">Sistema BEI · Panel Administrativo</p>
+          <h1 class="text-xs sm:text-sm font-bold leading-tight">ESCUELA DE EDUCACIÃ“N BÃSICA FISCOMISIONAL PADRE OTTO ACOSTA</h1>
+          <p class="text-[11px] text-[var(--apple-text-secondary)]">Sistema BEI Â· Panel Administrativo</p>
         </div>
       </div>
 
@@ -39,20 +39,20 @@
           <span class="theme-icon text-sm leading-none">&#127769;</span>
         </button>
 
-                <button type="button" id="btn-cloud-config" class="apple-btn apple-btn-secondary text-xs flex items-center gap-1.5" title="Configuraci�n de Base de Datos en la Nube">
+                <button type="button" id="btn-cloud-config" class="apple-btn apple-btn-secondary text-xs flex items-center gap-1.5" title="Configuración de Base de Datos en la Nube">
           <span id="cloud-indicator" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="cloud-status-text" class="text-emerald-700 dark:text-emerald-400 font-bold hidden sm:inline">Nube Activa</span>
         </button>
 
         <a href="./index.html" target="_blank" class="apple-btn apple-btn-secondary text-xs">
-          <span>&#128279;</span> <span class="hidden sm:inline">Formulario Público</span>
+          <span>&#128279;</span> <span class="hidden sm:inline">Formulario PÃºblico</span>
         </a>
 
         <div class="h-4 w-px bg-[var(--apple-border)] hidden sm:block"></div>
 
         <div class="flex items-center gap-2">
           <span class="text-xs font-medium hidden md:inline text-[var(--apple-text-secondary)]" id="admin-user-display">Administrador</span>
-          <button type="button" id="btn-change-pass" class="apple-btn apple-btn-secondary text-xs p-2" title="Cambiar Contraseña">
+          <button type="button" id="btn-change-pass" class="apple-btn apple-btn-secondary text-xs p-2" title="Cambiar ContraseÃ±a">
             &#128273;
           </button>
           <button type="button" id="btn-logout" onclick="handleAdminLogout()" class="apple-btn apple-btn-danger font-bold text-xs">
@@ -123,7 +123,7 @@
         <div class="flex flex-1 flex-col sm:flex-row items-center gap-2.5">
           <div class="relative w-full sm:w-80">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--apple-text-secondary)]">&#128269;</span>
-            <input type="text" id="admin-search-input" class="w-full pl-9 pr-3 py-2 form-input-clean text-xs font-medium" placeholder="Buscar estudiante, cédula...">
+            <input type="text" id="admin-search-input" class="w-full pl-9 pr-3 py-2 form-input-clean text-xs font-medium" placeholder="Buscar estudiante, cÃ©dula...">
           </div>
 
           <div class="w-full sm:w-56">
@@ -158,10 +158,10 @@
           <thead class="bg-[var(--apple-input-bg)] text-[var(--apple-text-secondary)] font-bold border-b border-[var(--apple-border)] uppercase tracking-wider text-[10.5px]">
             <tr>
               <th class="py-3 px-4">Estudiante</th>
-              <th class="py-3 px-3">Cédula</th>
+              <th class="py-3 px-3">CÃ©dula</th>
               <th class="py-3 px-3">Curso</th>
               <th class="py-3 px-3">Representante</th>
-              <th class="py-3 px-3">Teléfono</th>
+              <th class="py-3 px-3">TelÃ©fono</th>
               <th class="py-3 px-3">Fecha</th>
               <th class="py-3 px-4 text-center">Acciones</th>
             </tr>
@@ -179,7 +179,7 @@
         <div id="pagination-info">Mostrando 0 registros</div>
         <div class="flex items-center gap-2">
           <button type="button" id="btn-prev-page" class="apple-btn apple-btn-secondary text-xs py-1 px-3 disabled:opacity-30 disabled:cursor-not-allowed">Anterior</button>
-          <span id="page-indicator" class="font-bold text-[var(--apple-text-primary)] px-2 text-xs">Página 1</span>
+          <span id="page-indicator" class="font-bold text-[var(--apple-text-primary)] px-2 text-xs">PÃ¡gina 1</span>
           <button type="button" id="btn-next-page" class="apple-btn apple-btn-secondary text-xs py-1 px-3 disabled:opacity-30 disabled:cursor-not-allowed">Siguiente</button>
         </div>
       </div>
@@ -187,8 +187,8 @@
 
   </main>
   <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-center border-t border-[var(--apple-border)] mt-8 space-y-1">
-    <p class="text-xs font-semibold text-[var(--apple-text-primary)]">Escuela de Educación Básica Fiscomisional "Padre Otto Acosta"</p>
-    <p class="text-xs text-[var(--apple-text-secondary)]">Sistema BEI &copy; 2026 - 2027 · Todos los derechos reservados.</p>
+    <p class="text-xs font-semibold text-[var(--apple-text-primary)]">Escuela de EducaciÃ³n BÃ¡sica Fiscomisional "Padre Otto Acosta"</p>
+    <p class="text-xs text-[var(--apple-text-secondary)]">Sistema BEI &copy; 2026 - 2027 Â· Todos los derechos reservados.</p>
   </footer>
 
   <!-- ================= ADMIN MODALS ================= -->
@@ -205,10 +205,10 @@
         </div>
         <div class="flex items-center gap-2">
           <button type="button" id="editor-btn-pdf" class="apple-btn apple-btn-secondary text-xs">
-            📥 PDF
+            ðŸ“¥ PDF
           </button>
           <button type="button" id="editor-btn-preview" class="apple-btn apple-btn-secondary text-xs">
-            👁️ Ver
+            ðŸ‘ï¸ Ver
           </button>
           <button type="button" onclick="closeEditorModal()" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] p-1 text-xl leading-none">&times;</button>
         </div>
@@ -222,34 +222,34 @@
           <!-- Section 1: Estudiante & Croquis -->
           <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
             <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-blue)]">
-              <span class="w-2 h-2 rounded-full bg-[var(--apple-blue)]"></span> 1. Identificación y Croquis
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-blue)]"></span> 1. IdentificaciÃ³n y Croquis
             </h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div class="sm:col-span-2"><label class="apple-label">Estudiante:</label><input type="text" id="a_est_nombre" required class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Nacionalidad:</label><input type="text" id="a_est_nacionalidad" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">N° Cédula:</label><input type="text" id="a_est_identificacion" required class="form-input-clean font-mono"></div>
+              <div><label class="apple-label">NÂ° CÃ©dula:</label><input type="text" id="a_est_identificacion" required class="form-input-clean font-mono"></div>
               <div><label class="apple-label">Fecha Nacimiento:</label><input type="date" id="a_est_fecha_nac" class="form-input-clean"></div>
               <div><label class="apple-label">Edad:</label><input type="text" id="a_est_edad" class="form-input-clean"></div>
               <div class="sm:col-span-2">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <div class="sm:col-span-2">
-                    <label class="apple-label">Curso / Año:</label>
+                    <label class="apple-label">Curso / AÃ±o:</label>
                     <select id="a_est_curso" required class="form-input-clean bg-transparent">
-                      <option value="INICIAL 1 (3 AÑOS)" class="dark:bg-[#1c1c1e]">Inicial 1 (3 años)</option>
-                      <option value="INICIAL 2 (4 AÑOS)" class="dark:bg-[#1c1c1e]">Inicial 2 (4 años)</option>
-                      <option value="1° DE BÁSICA (PREPARATORIA)" class="dark:bg-[#1c1c1e]">1° de Básica (Preparatoria)</option>
-                      <option value="2° DE BÁSICA" class="dark:bg-[#1c1c1e]">2° de Básica</option>
-                      <option value="3° DE BÁSICA" class="dark:bg-[#1c1c1e]">3° de Básica</option>
-                      <option value="4° DE BÁSICA" class="dark:bg-[#1c1c1e]">4° de Básica</option>
-                      <option value="5° DE BÁSICA" class="dark:bg-[#1c1c1e]">5° de Básica</option>
-                      <option value="6° DE BÁSICA" class="dark:bg-[#1c1c1e]">6° de Básica</option>
-                      <option value="7° DE BÁSICA" class="dark:bg-[#1c1c1e]">7° de Básica</option>
-                      <option value="8° DE BÁSICA" class="dark:bg-[#1c1c1e]">8° de Básica</option>
-                      <option value="9° DE BÁSICA" class="dark:bg-[#1c1c1e]">9° de Básica</option>
-                      <option value="10° DE BÁSICA" class="dark:bg-[#1c1c1e]">10° de Básica</option>
-                      <option value="1° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">1° de Bachillerato</option>
-                      <option value="2° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">2° de Bachillerato</option>
-                      <option value="3° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">3° de Bachillerato</option>
+                      <option value="INICIAL 1 (3 AÃ‘OS)" class="dark:bg-[#1c1c1e]">Inicial 1 (3 aÃ±os)</option>
+                      <option value="INICIAL 2 (4 AÃ‘OS)" class="dark:bg-[#1c1c1e]">Inicial 2 (4 aÃ±os)</option>
+                      <option value="1Â° DE BÃSICA (PREPARATORIA)" class="dark:bg-[#1c1c1e]">1Â° de BÃ¡sica (Preparatoria)</option>
+                      <option value="2Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">2Â° de BÃ¡sica</option>
+                      <option value="3Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">3Â° de BÃ¡sica</option>
+                      <option value="4Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">4Â° de BÃ¡sica</option>
+                      <option value="5Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">5Â° de BÃ¡sica</option>
+                      <option value="6Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">6Â° de BÃ¡sica</option>
+                      <option value="7Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">7Â° de BÃ¡sica</option>
+                      <option value="8Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">8Â° de BÃ¡sica</option>
+                      <option value="9Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">9Â° de BÃ¡sica</option>
+                      <option value="10Â° DE BÃSICA" class="dark:bg-[#1c1c1e]">10Â° de BÃ¡sica</option>
+                      <option value="1Â° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">1Â° de Bachillerato</option>
+                      <option value="2Â° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">2Â° de Bachillerato</option>
+                      <option value="3Â° DE BACHILLERATO" class="dark:bg-[#1c1c1e]">3Â° de Bachillerato</option>
                     </select>
                   </div>
                   <div>
@@ -261,13 +261,13 @@
                       <option value="D" class="dark:bg-[#1c1c1e]">D</option>
                       <option value="E" class="dark:bg-[#1c1c1e]">E</option>
                       <option value="F" class="dark:bg-[#1c1c1e]">F</option>
-                      <option value="ÚNICO" class="dark:bg-[#1c1c1e]">ÚNICO</option>
+                      <option value="ÃšNICO" class="dark:bg-[#1c1c1e]">ÃšNICO</option>
                     </select>
                   </div>
                 </div>
               </div>
-              <div><label class="apple-label">Grupo Étnico:</label><input type="text" id="a_est_etnico" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Teléfono:</label><input type="tel" id="a_est_tel" class="form-input-clean font-mono"></div>
+              <div><label class="apple-label">Grupo Ã‰tnico:</label><input type="text" id="a_est_etnico" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">TelÃ©fono:</label><input type="tel" id="a_est_tel" class="form-input-clean font-mono"></div>
               <div><label class="apple-label">Celular:</label><input type="tel" id="a_est_cel" class="form-input-clean font-mono"></div>
               <div class="sm:col-span-2 md:col-span-3"><label class="apple-label">Domicilio:</label><input type="text" id="a_est_domicilio" class="form-input-clean uppercase"></div>
             </div>
@@ -277,14 +277,14 @@
               <div class="flex items-center justify-between mb-2">
                 <label class="font-bold">Croquis Domiciliario:</label>
                 <label class="cursor-pointer text-[var(--apple-blue)] font-semibold text-xs">
-                  📁 Cargar imagen
+                  ðŸ“ Cargar imagen
                   <input type="file" id="a-croquis-file" accept="image/*" class="hidden">
                 </label>
               </div>
               
               <div class="bg-[var(--apple-input-bg)] p-1.5 rounded-2xl flex flex-wrap items-center gap-1 mb-2 text-xs">
-                <button type="button" class="croquis-tool-btn apple-btn apple-btn-primary py-1 px-2.5 text-xs" data-tool="pen">&#128394;&#65039; Lápiz</button>
-                <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="line">&#128207; Línea</button>
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-primary py-1 px-2.5 text-xs" data-tool="pen">&#128394;&#65039; LÃ¡piz</button>
+                <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="line">&#128207; LÃ­nea</button>
                 <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="rect">&#9634; Manzana</button>
                 <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="text">&#128293; Texto</button>
                 <button type="button" class="croquis-tool-btn apple-btn apple-btn-secondary py-1 px-2.5 text-xs" data-tool="eraser">&#129529; Borrador</button>
@@ -316,23 +316,23 @@
                       <option value="CASADA" class="dark:bg-[#1c1c1e]">Casada</option>
                       <option value="DIVORCIADA" class="dark:bg-[#1c1c1e]">Divorciada</option>
                       <option value="VIUDA" class="dark:bg-[#1c1c1e]">Viuda</option>
-                      <option value="UNIÓN LIBRE" class="dark:bg-[#1c1c1e]">Unión Libre</option>
+                      <option value="UNIÃ“N LIBRE" class="dark:bg-[#1c1c1e]">UniÃ³n Libre</option>
                     </select>
                   </div>
                   <div>
                     <select id="a_m_inst" class="form-input-clean bg-transparent">
-                      <option value="">Instrucción</option>
-                      <option value="SIN INSTRUCCIÓN" class="dark:bg-[#1c1c1e]">Sin instrucción</option>
+                      <option value="">InstrucciÃ³n</option>
+                      <option value="SIN INSTRUCCIÃ“N" class="dark:bg-[#1c1c1e]">Sin instrucciÃ³n</option>
                       <option value="PRIMARIA" class="dark:bg-[#1c1c1e]">Primaria</option>
-                      <option value="BÁSICA" class="dark:bg-[#1c1c1e]">Básica</option>
+                      <option value="BÃSICA" class="dark:bg-[#1c1c1e]">BÃ¡sica</option>
                       <option value="BACHILLERATO" class="dark:bg-[#1c1c1e]">Bachillerato</option>
                       <option value="SUPERIOR" class="dark:bg-[#1c1c1e]">Superior</option>
                       <option value="POSGRADO" class="dark:bg-[#1c1c1e]">Posgrado</option>
                     </select>
                   </div>
-                  <div><input type="text" id="a_m_prof" class="form-input-clean uppercase" placeholder="Profesión"></div>
+                  <div><input type="text" id="a_m_prof" class="form-input-clean uppercase" placeholder="ProfesiÃ³n"></div>
                   <div><input type="text" id="a_m_trab" class="form-input-clean uppercase" placeholder="Lugar Trabajo"></div>
-                  <div><input type="tel" id="a_m_tel" class="form-input-clean font-mono" placeholder="Teléfonos"></div>
+                  <div><input type="tel" id="a_m_tel" class="form-input-clean font-mono" placeholder="TelÃ©fonos"></div>
                 </div>
               </div>
 
@@ -348,23 +348,23 @@
                       <option value="CASADO" class="dark:bg-[#1c1c1e]">Casado</option>
                       <option value="DIVORCIADO" class="dark:bg-[#1c1c1e]">Divorciado</option>
                       <option value="VIUDO" class="dark:bg-[#1c1c1e]">Viudo</option>
-                      <option value="UNIÓN LIBRE" class="dark:bg-[#1c1c1e]">Unión Libre</option>
+                      <option value="UNIÃ“N LIBRE" class="dark:bg-[#1c1c1e]">UniÃ³n Libre</option>
                     </select>
                   </div>
                   <div>
                     <select id="a_p_inst" class="form-input-clean bg-transparent">
-                      <option value="">Instrucción</option>
-                      <option value="SIN INSTRUCCIÓN" class="dark:bg-[#1c1c1e]">Sin instrucción</option>
+                      <option value="">InstrucciÃ³n</option>
+                      <option value="SIN INSTRUCCIÃ“N" class="dark:bg-[#1c1c1e]">Sin instrucciÃ³n</option>
                       <option value="PRIMARIA" class="dark:bg-[#1c1c1e]">Primaria</option>
-                      <option value="BÁSICA" class="dark:bg-[#1c1c1e]">Básica</option>
+                      <option value="BÃSICA" class="dark:bg-[#1c1c1e]">BÃ¡sica</option>
                       <option value="BACHILLERATO" class="dark:bg-[#1c1c1e]">Bachillerato</option>
                       <option value="SUPERIOR" class="dark:bg-[#1c1c1e]">Superior</option>
                       <option value="POSGRADO" class="dark:bg-[#1c1c1e]">Posgrado</option>
                     </select>
                   </div>
-                  <div><input type="text" id="a_p_prof" class="form-input-clean uppercase" placeholder="Profesión"></div>
+                  <div><input type="text" id="a_p_prof" class="form-input-clean uppercase" placeholder="ProfesiÃ³n"></div>
                   <div><input type="text" id="a_p_trab" class="form-input-clean uppercase" placeholder="Lugar Trabajo"></div>
-                  <div><input type="tel" id="a_p_tel" class="form-input-clean font-mono" placeholder="Teléfonos"></div>
+                  <div><input type="tel" id="a_p_tel" class="form-input-clean font-mono" placeholder="TelÃ©fonos"></div>
                 </div>
               </div>
 
@@ -378,7 +378,7 @@
                       <option value="MADRE" class="dark:bg-[#1c1c1e]">Madre</option>
                       <option value="PADRE" class="dark:bg-[#1c1c1e]">Padre</option>
                       <option value="ABUELO/A" class="dark:bg-[#1c1c1e]">Abuelo/a</option>
-                      <option value="TÍO/A" class="dark:bg-[#1c1c1e]">Tío/a</option>
+                      <option value="TÃO/A" class="dark:bg-[#1c1c1e]">TÃ­o/a</option>
                       <option value="HERMANO/A" class="dark:bg-[#1c1c1e]">Hermano/a</option>
                       <option value="TUTOR LEGAL" class="dark:bg-[#1c1c1e]">Tutor Legal</option>
                       <option value="OTRO" class="dark:bg-[#1c1c1e]">Otro</option>
@@ -392,38 +392,38 @@
                       <option value="CASADO/A" class="dark:bg-[#1c1c1e]">Casado/a</option>
                       <option value="DIVORCIADO/A" class="dark:bg-[#1c1c1e]">Divorciado/a</option>
                       <option value="VIUDO/A" class="dark:bg-[#1c1c1e]">Viudo/a</option>
-                      <option value="UNIÓN LIBRE" class="dark:bg-[#1c1c1e]">Unión Libre</option>
+                      <option value="UNIÃ“N LIBRE" class="dark:bg-[#1c1c1e]">UniÃ³n Libre</option>
                     </select>
                   </div>
                   <div>
                     <select id="a_r_inst" class="form-input-clean bg-transparent">
-                      <option value="">Instrucción</option>
-                      <option value="SIN INSTRUCCIÓN" class="dark:bg-[#1c1c1e]">Sin instrucción</option>
+                      <option value="">InstrucciÃ³n</option>
+                      <option value="SIN INSTRUCCIÃ“N" class="dark:bg-[#1c1c1e]">Sin instrucciÃ³n</option>
                       <option value="PRIMARIA" class="dark:bg-[#1c1c1e]">Primaria</option>
-                      <option value="BÁSICA" class="dark:bg-[#1c1c1e]">Básica</option>
+                      <option value="BÃSICA" class="dark:bg-[#1c1c1e]">BÃ¡sica</option>
                       <option value="BACHILLERATO" class="dark:bg-[#1c1c1e]">Bachillerato</option>
                       <option value="SUPERIOR" class="dark:bg-[#1c1c1e]">Superior</option>
                       <option value="POSGRADO" class="dark:bg-[#1c1c1e]">Posgrado</option>
                     </select>
                   </div>
-                  <div><input type="text" id="a_r_prof" class="form-input-clean uppercase" placeholder="Profesión"></div>
+                  <div><input type="text" id="a_r_prof" class="form-input-clean uppercase" placeholder="ProfesiÃ³n"></div>
                   <div><input type="text" id="a_r_trab" class="form-input-clean uppercase" placeholder="Lugar Trabajo"></div>
-                  <div><input type="tel" id="a_r_tel" class="form-input-clean font-mono" placeholder="Teléfonos"></div>
+                  <div><input type="tel" id="a_r_tel" class="form-input-clean font-mono" placeholder="TelÃ©fonos"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Section 3: Socioeconómico, Salud y Académico -->
-          <!-- Section 3: Socioeconómico y Servicios -->
+          <!-- Section 3: SocioeconÃ³mico, Salud y AcadÃ©mico -->
+          <!-- Section 3: SocioeconÃ³mico y Servicios -->
           <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
             <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-orange)]">
-              <span class="w-2 h-2 rounded-full bg-[var(--apple-orange)]"></span> 3. Referencias Socioeconómicas y Servicios
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-orange)]"></span> 3. Referencias SocioeconÃ³micas y Servicios
             </h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><label class="apple-label">Ingresos Totales ($):</label><input type="number" id="a_ing_total" class="form-input-clean font-mono"></div>
               <div><label class="apple-label">Egresos Totales ($):</label><input type="number" id="a_egr_total" class="form-input-clean font-mono"></div>
-              <div><label class="apple-label">Préstamos recibidos:</label><input type="text" id="a_socio_prestamos" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">PrÃ©stamos recibidos:</label><input type="text" id="a_socio_prestamos" class="form-input-clean uppercase"></div>
               
               <!-- Housing & Basic Services -->
               <div class="sm:col-span-2 md:col-span-3 pt-2">
@@ -434,18 +434,18 @@
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_anticresis" value="Anticresis"> <span>Anticresis</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_prestada" value="Prestada"> <span>Prestada</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_compartida" value="Compartida"> <span>Compartida</span></label>
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_prestamo" value="Con préstamo"> <span>Con préstamo</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_cond_prestamo" value="Con prÃ©stamo"> <span>Con prÃ©stamo</span></label>
                 </div>
               </div>
 
               <div class="sm:col-span-2 md:col-span-3 pt-2">
-                <label class="apple-label font-bold text-[var(--apple-green)] mb-1">Servicios Básicos:</label>
+                <label class="apple-label font-bold text-[var(--apple-green)] mb-1">Servicios BÃ¡sicos:</label>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_luz" value="Luz eléctrica"> <span>Luz</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_luz" value="Luz elÃ©ctrica"> <span>Luz</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_agua" value="Agua potable"> <span>Agua</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_sshh" value="SSHH"> <span>SSHH</span></label>
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_pozo" value="Pozo séptico"> <span>Pozo</span></label>
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_tel" value="Teléfono"> <span>Teléfono</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_pozo" value="Pozo sÃ©ptico"> <span>Pozo</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_tel" value="TelÃ©fono"> <span>TelÃ©fono</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_cel" value="Celular"> <span>Celular</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_net" value="Internet"> <span>Internet</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_serv_cable" value="Cable"> <span>Cable</span></label>
@@ -457,39 +457,39 @@
               </div>
 
               <!-- Health & Medical Attendance -->
-              <div><label class="apple-label">¿Discapacidad?:</label><select id="a_salud_disc" class="form-input-clean"><option value="No" class="dark:bg-[#1c1c1e]">No</option><option value="Sí" class="dark:bg-[#1c1c1e]">Sí</option></select></div>
+              <div><label class="apple-label">Â¿Discapacidad?:</label><select id="a_salud_disc" class="form-input-clean"><option value="No" class="dark:bg-[#1c1c1e]">No</option><option value="SÃ­" class="dark:bg-[#1c1c1e]">SÃ­</option></select></div>
               <div><label class="apple-label">Tipo / % Discapacidad:</label><input type="text" id="a_salud_disc_tipo" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Condición médica:</label><input type="text" id="a_salud_cond" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">CondiciÃ³n mÃ©dica:</label><input type="text" id="a_salud_cond" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Alergias:</label><input type="text" id="a_salud_alergias" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Medicamentos:</label><input type="text" id="a_salud_meds" class="form-input-clean uppercase"></div>
               
               <div class="sm:col-span-2 md:col-span-3 pt-2">
-                <label class="apple-label font-bold text-[var(--apple-pink)] mb-1">El estudiante recibe atención médica en:</label>
+                <label class="apple-label font-bold text-[var(--apple-pink)] mb-1">El estudiante recibe atenciÃ³n mÃ©dica en:</label>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_centro" value="Centro de salud"> <span>Centro de salud</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_subcentro" value="Subcentro de salud"> <span>Subcentro</span></label>
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_hospital" value="Hospital público"> <span>Hospital público</span></label>
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_clinica" value="Clínica privada"> <span>Clínica privada</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_hospital" value="Hospital pÃºblico"> <span>Hospital pÃºblico</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_med_clinica" value="ClÃ­nica privada"> <span>ClÃ­nica privada</span></label>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Section 4: Datos Académicos (Punto 6) -->
+          <!-- Section 4: Datos AcadÃ©micos (Punto 6) -->
           <div class="p-4 rounded-2xl bg-[var(--apple-input-bg)] border border-[var(--apple-border)] space-y-3 text-xs">
             <h4 class="font-bold uppercase tracking-wider flex items-center gap-2 text-[var(--apple-blue)]">
-              <span class="w-2 h-2 rounded-full bg-[var(--apple-blue)]"></span> 4. Datos Académicos / Rendimiento Escolar (Punto 6)
+              <span class="w-2 h-2 rounded-full bg-[var(--apple-blue)]"></span> 4. Datos AcadÃ©micos / Rendimiento Escolar (Punto 6)
             </h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><label class="apple-label">Fecha Ingreso:</label><input type="date" id="a_acad_fecha_ingreso" class="form-input-clean"></div>
-              <div class="sm:col-span-2"><label class="apple-label">Institución procedencia:</label><input type="text" id="a_acad_inst" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">¿Repetido años?:</label><select id="a_acad_rep" class="form-input-clean"><option value="No">No</option><option value="Sí">Sí</option></select></div>
-              <div class="sm:col-span-2"><label class="apple-label">¿Cuáles años?:</label><input type="text" id="a_acad_anios_rep" class="form-input-clean uppercase"></div>
+              <div class="sm:col-span-2"><label class="apple-label">InstituciÃ³n procedencia:</label><input type="text" id="a_acad_inst" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Â¿Repetido aÃ±os?:</label><select id="a_acad_rep" class="form-input-clean"><option value="No">No</option><option value="SÃ­">SÃ­</option></select></div>
+              <div class="sm:col-span-2"><label class="apple-label">Â¿CuÃ¡les aÃ±os?:</label><input type="text" id="a_acad_anios_rep" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Asignaturas preferencia:</label><input type="text" id="a_acad_pref" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Asignaturas dificultad:</label><input type="text" id="a_acad_dif" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Dignidades alcanzadas:</label><input type="text" id="a_acad_dignidades" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Logros académicos:</label><input type="text" id="a_acad_logros" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Participación en:</label><input type="text" id="a_acad_participacion" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Logros acadÃ©micos:</label><input type="text" id="a_acad_logros" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">ParticipaciÃ³n en:</label><input type="text" id="a_acad_participacion" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Clubes:</label><input type="text" id="a_acad_clubes" class="form-input-clean uppercase"></div>
               <div class="sm:col-span-2"><label class="apple-label">Extracurriculares:</label><input type="text" id="a_acad_extracurriculares" class="form-input-clean uppercase"></div>
             </div>
@@ -506,28 +506,28 @@
               <div><label class="apple-label">Edad madre al nacer:</label><input type="number" id="a_hist_edad_madre" class="form-input-clean"></div>
               <div><label class="apple-label">Accidentes embarazo:</label><input type="text" id="a_hist_acc_embarazo" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Medicamentos embarazo:</label><input type="text" id="a_hist_meds_embarazo" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">¿Cuáles medicamentos?:</label><input type="text" id="a_hist_meds_cuales" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Â¿CuÃ¡les medicamentos?:</label><input type="text" id="a_hist_meds_cuales" class="form-input-clean uppercase"></div>
               <div class="sm:col-span-2 md:col-span-4">
                 <label class="apple-label font-bold mb-1">Tipo de Parto:</label>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_termino" value="al término"> <span>Al término</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_termino" value="al tÃ©rmino"> <span>Al tÃ©rmino</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_prematuro" value="Prematuro"> <span>Prematuro</span></label>
-                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_cesarea" value="Cesárea"> <span>Cesárea</span></label>
+                  <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_cesarea" value="CesÃ¡rea"> <span>CesÃ¡rea</span></label>
                   <label class="flex items-center gap-1.5"><input type="checkbox" id="a_parto_normal" value="Parto normal"> <span>Parto normal</span></label>
                 </div>
               </div>
               <div class="sm:col-span-2 md:col-span-4"><label class="apple-label">Otras dificultades en embarazo:</label><input type="text" id="a_hist_dif_embarazo" class="form-input-clean uppercase"></div>
             </div>
 
-            <p class="font-bold text-[var(--apple-blue)] mt-3 mb-1">Datos de la Recién Nacida / Recién Nacido:</p>
+            <p class="font-bold text-[var(--apple-blue)] mt-3 mb-1">Datos de la ReciÃ©n Nacida / ReciÃ©n Nacido:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
               <div><label class="apple-label">Peso al nacer:</label><input type="text" id="a_hist_peso_nacer" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Talla al nacer:</label><input type="text" id="a_hist_talla_nacer" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Edad empezó a caminar:</label><input type="text" id="a_hist_edad_caminar" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Edad habló 1ra vez:</label><input type="text" id="a_hist_edad_hablo" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Edad empezÃ³ a caminar:</label><input type="text" id="a_hist_edad_caminar" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Edad hablÃ³ 1ra vez:</label><input type="text" id="a_hist_edad_hablo" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Periodo lactancia:</label><input type="text" id="a_hist_lactancia" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Edad usó biberón:</label><input type="text" id="a_hist_edad_biberon" class="form-input-clean uppercase"></div>
-              <div class="sm:col-span-2"><label class="apple-label">Edad control esfínteres:</label><input type="text" id="a_hist_edad_esfinteres" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">Edad usÃ³ biberÃ³n:</label><input type="text" id="a_hist_edad_biberon" class="form-input-clean uppercase"></div>
+              <div class="sm:col-span-2"><label class="apple-label">Edad control esfÃ­nteres:</label><input type="text" id="a_hist_edad_esfinteres" class="form-input-clean uppercase"></div>
             </div>
 
             <p class="font-bold text-[var(--apple-orange)] mt-3 mb-1">Enfermedades e Infancia:</p>
@@ -535,22 +535,22 @@
               <div><label class="apple-label">Enfermedades:</label><input type="text" id="a_hist_enf_desc" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Accidentes:</label><input type="text" id="a_hist_acc_desc" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Alergias:</label><input type="text" id="a_hist_alergias_desc" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Cirugías:</label><input type="text" id="a_hist_cirugias_desc" class="form-input-clean uppercase"></div>
-              <div><label class="apple-label">Pérdidas conocimiento:</label><input type="text" id="a_hist_perdidas_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">CirugÃ­as:</label><input type="text" id="a_hist_cirugias_desc" class="form-input-clean uppercase"></div>
+              <div><label class="apple-label">PÃ©rdidas conocimiento:</label><input type="text" id="a_hist_perdidas_desc" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Otros aspectos:</label><input type="text" id="a_hist_otros_salud_desc" class="form-input-clean uppercase"></div>
             </div>
 
-            <p class="font-bold text-[var(--apple-purple)] mt-3 mb-1">Antecedentes Patológicos Familiares:</p>
+            <p class="font-bold text-[var(--apple-purple)] mt-3 mb-1">Antecedentes PatolÃ³gicos Familiares:</p>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
               <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_obesidad" value="Obesidad"> <span>Obesidad</span></label>
               <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_cardiacas" value="Enfermedades cardiacas"> <span>Enf. cardiacas</span></label>
-              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_hipertension" value="Hipertensión"> <span>Hipertensión</span></label>
+              <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_hipertension" value="HipertensiÃ³n"> <span>HipertensiÃ³n</span></label>
               <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_diabetes" value="Diabetes"> <span>Diabetes</span></label>
               <label class="flex items-center gap-1.5"><input type="checkbox" id="a_patol_mentales" value="Enfermedades mentales"> <span>Enf. mentales</span></label>
             </div>
-            <div class="mt-2"><label class="apple-label">Otros antecedentes patológicos:</label><input type="text" id="a_patol_otros" class="form-input-clean uppercase"></div>
+            <div class="mt-2"><label class="apple-label">Otros antecedentes patolÃ³gicos:</label><input type="text" id="a_patol_otros" class="form-input-clean uppercase"></div>
 
-            <p class="font-bold text-[var(--apple-green)] mt-3 mb-1">Relación con su Entorno Familiar:</p>
+            <p class="font-bold text-[var(--apple-green)] mt-3 mb-1">RelaciÃ³n con su Entorno Familiar:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div><label class="apple-label">Padre:</label><input type="text" id="a_entorno_rel_padre" class="form-input-clean uppercase"></div>
               <div><label class="apple-label">Madre:</label><input type="text" id="a_entorno_rel_madre" class="form-input-clean uppercase"></div>
@@ -558,7 +558,7 @@
               <div><label class="apple-label">Otros en el hogar:</label><input type="text" id="a_entorno_rel_otros" class="form-input-clean uppercase"></div>
             </div>
 
-            <div class="mt-2"><label class="apple-label">Costumbres / Hábitos:</label><textarea id="a_habitos" rows="2" class="form-input-clean"></textarea></div>
+            <div class="mt-2"><label class="apple-label">Costumbres / HÃ¡bitos:</label><textarea id="a_habitos" rows="2" class="form-input-clean"></textarea></div>
             <div class="mt-2"><label class="apple-label">Firma C.I.:</label><input type="text" id="a_firma_ci" class="form-input-clean font-mono"></div>
           </div>
 
@@ -568,7 +568,7 @@
               Cancelar
             </button>
             <button type="submit" id="btn-save-edit" class="apple-btn apple-btn-success text-xs">
-              💾 Guardar Cambios
+              ðŸ’¾ Guardar Cambios
             </button>
           </div>
         </form>
@@ -580,17 +580,17 @@
   <div id="modalChangePass" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="apple-modal-card max-w-sm w-full p-6 animate-apple-modal">
       <div class="flex items-center justify-between pb-3 border-b border-[var(--apple-border)]">
-        <h3 class="text-sm font-bold">Cambiar Contraseña Admin</h3>
+        <h3 class="text-sm font-bold">Cambiar ContraseÃ±a Admin</h3>
         <button type="button" onclick="document.getElementById('modalChangePass').classList.add('hidden')" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] text-lg leading-none">&times;</button>
       </div>
       <form id="formChangePass" class="mt-4 space-y-3 text-xs">
         <div id="cp_error" class="text-[var(--apple-red)] bg-[var(--apple-red)]/10 p-2.5 rounded-xl hidden"></div>
         <div>
-          <label class="block apple-label mb-1">Contraseña Actual:</label>
+          <label class="block apple-label mb-1">ContraseÃ±a Actual:</label>
           <input type="password" id="cp_current" required class="form-input-clean">
         </div>
         <div>
-          <label class="block apple-label mb-1">Nueva Contraseña:</label>
+          <label class="block apple-label mb-1">Nueva ContraseÃ±a:</label>
           <input type="password" id="cp_new" required minlength="6" class="form-input-clean">
         </div>
         <div class="flex justify-end gap-2 pt-3 border-t border-[var(--apple-border)]">
@@ -617,9 +617,9 @@
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block apple-label mb-1">Tamaño:</label>
+            <label class="block apple-label mb-1">TamaÃ±o:</label>
             <select class="croquis-text-size w-full form-input-clean text-xs">
-              <option value="10" class="dark:bg-[#1c1c1e]">10px - Pequeño</option>
+              <option value="10" class="dark:bg-[#1c1c1e]">10px - PequeÃ±o</option>
               <option value="12" selected class="dark:bg-[#1c1c1e]">12px - Normal</option>
               <option value="14" class="dark:bg-[#1c1c1e]">14px - Mediano</option>
               <option value="16" class="dark:bg-[#1c1c1e]">16px - Grande</option>
@@ -644,11 +644,11 @@
       <div class="flex items-start justify-between pb-4 border-b border-[var(--apple-border)]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl font-bold">
-            ??
+            ☁️
           </div>
           <div>
             <h3 class="text-base font-bold">Base de Datos en la Nube (Firebase)</h3>
-            <p class="apple-caption text-xs">Sincronizaci�n en tiempo real entre celulares y computadoras</p>
+            <p class="apple-caption text-xs">Sincronización en tiempo real entre celulares y computadoras</p>
           </div>
         </div>
         <button type="button" onclick="document.getElementById('modalCloudConfig').classList.add('hidden')" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] text-xl p-1 leading-none">&times;</button>
@@ -656,8 +656,8 @@
 
       <div class="mt-4 space-y-3.5 text-xs">
         <div class="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-xl text-blue-900 dark:text-blue-200 leading-relaxed">
-          <p class="font-bold mb-1">�Para qu� sirve esto?</p>
-          Permite que cuando los padres de familia llenen el formulario desde sus tel�fonos celulares en sus casas, los registros aparezcan <b>de inmediato</b> en este panel de administraci�n.
+          <p class="font-bold mb-1">¿Para qué sirve esto?</p>
+          Permite que cuando los padres de familia llenen el formulario desde sus teléfonos celulares en sus casas, los registros aparezcan <b>de inmediato</b> en este panel de administración.
         </div>
 
         <div>
@@ -672,20 +672,20 @@
         </div>
 
         <div class="pt-2 text-[11px] text-[var(--apple-text-secondary)] space-y-1 bg-[var(--apple-input-bg)] p-3 rounded-xl border border-[var(--apple-border)]">
-          <p class="font-bold text-[var(--apple-text-primary)]">Pasos r�pidos para crear tu base de datos gratis (2 min):</p>
+          <p class="font-bold text-[var(--apple-text-primary)]">Pasos rápidos para crear tu base de datos gratis (2 min):</p>
           <ol class="list-decimal pl-4 space-y-0.5">
             <li>Entra a <a href="https://console.firebase.google.com" target="_blank" class="text-blue-500 underline font-bold">console.firebase.google.com</a> con tu cuenta de Google.</li>
             <li>Haz clic en <b>Crear proyecto</b> (ej: <i>Escuela Padre Otto Acosta</i>).</li>
-            <li>En el men� izquierdo ve a <b>Compilaci�n &gt; Realtime Database &gt; Crear base de datos</b>.</li>
+            <li>En el menú izquierdo ve a <b>Compilación &gt; Realtime Database &gt; Crear base de datos</b>.</li>
             <li>Elige <b>Modo de prueba</b> (permite lectura y escritura) y copia el enlace web que te da arriba.</li>
-            <li>P�galo aqu� y presiona <b>Guardar y Conectar</b>.</li>
+            <li>Pégalo aquí y presiona <b>Guardar y Conectar</b>.</li>
           </ol>
         </div>
       </div>
 
       <div class="mt-5 flex items-center justify-end gap-2.5 pt-3 border-t border-[var(--apple-border)]">
         <button type="button" onclick="document.getElementById('modalCloudConfig').classList.add('hidden')" class="apple-btn apple-btn-secondary text-xs">Cancelar</button>
-        <button type="button" id="btn-save-cloud-config" class="apple-btn apple-btn-primary text-xs font-bold">?? Guardar y Conectar</button>
+        <button type="button" id="btn-save-cloud-config" class="apple-btn apple-btn-primary text-xs font-bold">💾 Guardar y Conectar</button>
       </div>
     </div>
   </div>
@@ -698,8 +698,8 @@
           <span id="dialog-icon">&#128196;</span>
         </div>
         <div class="flex-1 min-w-0">
-          <h3 id="dialog-title" class="text-base font-bold leading-tight">Confirmación</h3>
-          <div id="dialog-message" class="apple-caption text-xs mt-1.5 leading-relaxed text-[var(--apple-text-secondary)]">¿Desea continuar con esta acción?</div>
+          <h3 id="dialog-title" class="text-base font-bold leading-tight">ConfirmaciÃ³n</h3>
+          <div id="dialog-message" class="apple-caption text-xs mt-1.5 leading-relaxed text-[var(--apple-text-secondary)]">Â¿Desea continuar con esta acciÃ³n?</div>
         </div>
       </div>
       <div class="mt-6 flex items-center justify-end gap-2.5 pt-3 border-t border-[var(--apple-border)]">
@@ -712,12 +712,12 @@
     <!-- Firebase Cloud SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="./js/firebase-config.js?v=4.0"></script>
+  <script src="./js/firebase-config.js?v=4.1"></script>
   <!-- Scripts -->
-  <script src="./js/dialogs.js"></script>
-  <script src="./js/croquis.js"></script>
-  <script src="./js/pdf-generator.js?v=4.0"></script>
-  <script src="./js/admin.js?v=4.0"></script>
+  <script src="./js/dialogs.js?v=4.1"></script>
+  <script src="./js/croquis.js?v=4.1"></script>
+  <script src="./js/pdf-generator.js?v=4.1"></script>
+  <script src="./js/admin.js?v=4.1"></script>
 </body>
 </html>
 
