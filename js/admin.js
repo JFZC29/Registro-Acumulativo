@@ -23,25 +23,54 @@ let currentPage = 1;
 let currentSearch = '';
 let currentCourse = '';
 
+function updateCloudStatusUI() {
+  const isConf = window.FirebaseDB && window.FirebaseDB.isConfigured();
+  const ind = document.getElementById('cloud-indicator');
+  const txt = document.getElementById('cloud-status-text');
+  if (ind && txt) {
+    if (isConf) {
+      ind.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+      txt.textContent = 'Nube Activa';
+      txt.className = 'text-emerald-700 dark:text-emerald-400 font-bold hidden sm:inline';
+    } else {
+      ind.className = 'w-2 h-2 rounded-full bg-amber-500';
+      txt.textContent = 'Conectar Nube';
+      txt.className = 'text-amber-700 dark:text-amber-400 font-bold hidden sm:inline';
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-  // Verify Authentication
+  // 1. Iniciar interfaz de nube inmediatamente
+  updateCloudStatusUI();
+
+  // 2. Botones y filtros
+  setupAdminButtons();
+  setupSearchAndFilters();
+
+  // 3. Verificar Autenticación
   await checkAuth();
 
-  // Initialize Croquis in Modal
+  // 4. Inicializar Croquis
   adminCroquis = new CroquisEditor('adminCroquisCanvas');
   setupAdminCroquisTools();
 
-  // Load Dashboard Data
+  // 5. Cargar Datos
   loadStats();
   loadRecords();
 
-  // Search & Filter Listeners
-  setupSearchAndFilters();
+  // 6. Escucha en tiempo real de Firebase
+  if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+    window.FirebaseDB.onRecordsChange((newRecords) => {
+      if (newRecords && Array.isArray(newRecords)) {
+        setLocalRecords(newRecords);
+        loadStats();
+        loadRecords(currentPage);
+      }
+    });
+  }
 
-  // Action Buttons
-  setupAdminButtons();
-
-  // Age Auto-calculation
+  // 7. Cálculo de edad
   setupAdminAgeCalculation();
 });
 
@@ -970,6 +999,7 @@ async function deleteRecord(id, studentName) {
     window.showToast(err.message || 'Error al eliminar', 'error');
   }
 }
+
 
 
 
