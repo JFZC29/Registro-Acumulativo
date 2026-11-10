@@ -1,4 +1,4 @@
-﻿window.handleAdminLogout = async function() {
+window.handleAdminLogout = async function() {
   let confirmed = true;
   if (typeof window.showAppConfirm === 'function') {
     try {
@@ -423,8 +423,8 @@ async function loadRecords(page = 1) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-500 font-semibold">Error al cargar registros</td></tr>';
   }
 }
-    document.getElementById('pagination-info').textContent = `Mostrando ${records.length} de ${total} registros (PÃ¡gina ${page} de ${totalPages})`;
-    document.getElementById('page-indicator').textContent = `PÃ¡gina ${page} de ${totalPages}`;
+    document.getElementById('pagination-info').textContent = `Mostrando ${records.length} de ${total} registros (Página ${page} de ${totalPages})`;
+    document.getElementById('page-indicator').textContent = `Página ${page} de ${totalPages}`;
 
     const prevBtn = document.getElementById('btn-prev-page');
     const nextBtn = document.getElementById('btn-next-page');
@@ -637,9 +637,9 @@ function setupAdminButtons() {
         body: JSON.stringify({ currentPassword: cur, newPassword: nw })
       });
       if (!res.ok) throw new Error('API Offline'); const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al cambiar contraseÃ±a');
+      if (!res.ok) throw new Error(data.error || 'Error al cambiar contraseña');
 
-      await window.showAppAlert('ContraseÃ±a Actualizada', 'La contraseÃ±a de administrador ha sido actualizada con Ã©xito.', 'success');
+      await window.showAppAlert('Contraseña Actualizada', 'La contraseña de administrador ha sido actualizada con éxito.', 'success');
       document.getElementById('modalChangePass').classList.add('hidden');
     } catch (err) {
       errDiv.textContent = err.message;
@@ -673,7 +673,7 @@ function setupAdminAgeCalculation() {
         age--;
       }
       if (age >= 0 && age < 120) {
-        ageInput.value = `${age} aÃ±os`;
+        ageInput.value = `${age} años`;
       }
     }
   };
@@ -722,7 +722,7 @@ function openEditModal(record) {
 
   if (record) {
     title.textContent = `Editar Registro: ${record.identificacion?.estudiante || ''}`;
-    subtitle.textContent = `ID: ${record.id} Â· CÃ©dula: ${record.identificacion?.num_identificacion || ''}`;
+    subtitle.textContent = `ID: ${record.id} · Cédula: ${record.identificacion?.num_identificacion || ''}`;
     pdfBtn.style.display = 'inline-flex';
     previewBtn.style.display = 'inline-flex';
     pdfBtn.onclick = () => PDFEngine.download(currentRecord);
@@ -732,7 +732,7 @@ function openEditModal(record) {
     fillEditorValues(record);
   } else {
     title.textContent = 'Crear Nuevo Registro Acumulativo';
-    subtitle.textContent = 'Ingrese la informaciÃ³n completa para registrar al estudiante';
+    subtitle.textContent = 'Ingrese la información completa para registrar al estudiante';
     pdfBtn.style.display = 'none';
     previewBtn.style.display = 'none';
     document.getElementById('edit_record_id').value = '';
@@ -846,15 +846,15 @@ async function saveEditorRecord() {
   if (document.getElementById('a_cond_anticresis')?.checked) condVivienda.push('Anticresis');
   if (document.getElementById('a_cond_prestada')?.checked) condVivienda.push('Prestada');
   if (document.getElementById('a_cond_compartida')?.checked) condVivienda.push('Compartida');
-  if (document.getElementById('a_cond_prestamo')?.checked) condVivienda.push('Con prÃ©stamo');
+  if (document.getElementById('a_cond_prestamo')?.checked) condVivienda.push('Con préstamo');
 
   // Collect Basic Services
   const servBasicos = [];
-  if (document.getElementById('a_serv_luz')?.checked) servBasicos.push('Luz elÃ©ctrica');
+  if (document.getElementById('a_serv_luz')?.checked) servBasicos.push('Luz eléctrica');
   if (document.getElementById('a_serv_agua')?.checked) servBasicos.push('Agua potable');
   if (document.getElementById('a_serv_sshh')?.checked) servBasicos.push('SSHH');
-  if (document.getElementById('a_serv_pozo')?.checked) servBasicos.push('Pozo sÃ©ptico');
-  if (document.getElementById('a_serv_tel')?.checked) servBasicos.push('TelÃ©fono');
+  if (document.getElementById('a_serv_pozo')?.checked) servBasicos.push('Pozo séptico');
+  if (document.getElementById('a_serv_tel')?.checked) servBasicos.push('Teléfono');
   if (document.getElementById('a_serv_cel')?.checked) servBasicos.push('Celular');
   if (document.getElementById('a_serv_net')?.checked) servBasicos.push('Internet');
   if (document.getElementById('a_serv_cable')?.checked) servBasicos.push('Cable');
@@ -867,14 +867,14 @@ async function saveEditorRecord() {
   const medAtencion = [];
   if (document.getElementById('a_med_centro')?.checked) medAtencion.push('Centro de salud');
   if (document.getElementById('a_med_subcentro')?.checked) medAtencion.push('Subcentro de salud');
-  if (document.getElementById('a_med_hospital')?.checked) medAtencion.push('Hospital pÃºblico');
-  if (document.getElementById('a_med_clinica')?.checked) medAtencion.push('ClÃ­nica privada');
+  if (document.getElementById('a_med_hospital')?.checked) medAtencion.push('Hospital público');
+  if (document.getElementById('a_med_clinica')?.checked) medAtencion.push('Clínica privada');
 
   // Collect Tipo de Parto
   const tipoParto = [];
-  if (document.getElementById('a_parto_termino')?.checked) tipoParto.push('al tÃ©rmino');
+  if (document.getElementById('a_parto_termino')?.checked) tipoParto.push('al término');
   if (document.getElementById('a_parto_prematuro')?.checked) tipoParto.push('Prematuro');
-  if (document.getElementById('a_parto_cesarea')?.checked) tipoParto.push('CesÃ¡rea');
+  if (document.getElementById('a_parto_cesarea')?.checked) tipoParto.push('Cesárea');
   if (document.getElementById('a_parto_normal')?.checked) tipoParto.push('Parto normal');
 
   const cursoVal = document.getElementById('a_est_curso')?.value || '';

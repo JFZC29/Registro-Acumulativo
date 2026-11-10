@@ -1,17 +1,17 @@
-﻿// Public Application Logic for Cumulative Record Form (Apple Design)
+// Public Application Logic for Cumulative Record Form (Apple Design)
 
 let croquisEditor = null;
 let currentStep = 1;
 const totalSteps = 7;
 
 const stepMetadata = {
-  1: { title: "Paso 1: Datos de IdentificaciÃ³n y Croquis", desc: "Complete los datos bÃ¡sicos del estudiante y dibuje el croquis domiciliario." },
-  2: { title: "Paso 2: Datos Familiares", desc: "InformaciÃ³n de los padres y representante legal del estudiante." },
-  3: { title: "Paso 3: ComposiciÃ³n Familiar", desc: "Otros familiares o personas que viven en el mismo hogar con el estudiante." },
-  4: { title: "Paso 4: Referencias SocioeconÃ³micas", desc: "Ingresos, egresos familiares, condiciones de vivienda y servicios." },
-  5: { title: "Paso 5: Datos de Salud", desc: "Condiciones mÃ©dicas, discapacidades, alergias y medicamentos." },
-  6: { title: "Paso 6: Datos AcadÃ©micos y Convivencia", desc: "Historial educativo, preferencias y rendimiento." },
-  7: { title: "Paso 7: Entorno Familiar, HÃ¡bitos y Firma", desc: "Convivencia familiar, cÃ©dula para firma y finalizaciÃ³n del registro." }
+  1: { title: "Paso 1: Datos de Identificación y Croquis", desc: "Complete los datos básicos del estudiante y dibuje el croquis domiciliario." },
+  2: { title: "Paso 2: Datos Familiares", desc: "Información de los padres y representante legal del estudiante." },
+  3: { title: "Paso 3: Composición Familiar", desc: "Otros familiares o personas que viven en el mismo hogar con el estudiante." },
+  4: { title: "Paso 4: Referencias Socioeconómicas", desc: "Ingresos, egresos familiares, condiciones de vivienda y servicios." },
+  5: { title: "Paso 5: Datos de Salud", desc: "Condiciones médicas, discapacidades, alergias y medicamentos." },
+  6: { title: "Paso 6: Datos Académicos y Convivencia", desc: "Historial educativo, preferencias y rendimiento." },
+  7: { title: "Paso 7: Entorno Familiar, Hábitos y Firma", desc: "Convivencia familiar, cédula para firma y finalización del registro." }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -134,7 +134,7 @@ function calculateExactAge(birthDateString) {
   }
 
   if (years < 0 || years > 125) return '';
-  return years === 1 ? '1 aÃ±o' : `${years} aÃ±os`;
+  return years === 1 ? '1 año' : `${years} años`;
 }
 
 // Automatic Calculations: Birthdate -> Age & Income / Expense Totals
@@ -233,7 +233,7 @@ function setupOtrosFamiliaresTable() {
   addBtn.addEventListener('click', () => {
     const rowCount = tableBody.querySelectorAll('tr').length;
     if (rowCount >= 8) {
-      window.showToast('MÃ¡ximo 8 familiares en la tabla', 'warning');
+      window.showToast('Máximo 8 familiares en la tabla', 'warning');
       return;
     }
     const tr = document.createElement('tr');
@@ -243,7 +243,7 @@ function setupOtrosFamiliaresTable() {
       <td class="p-2"><input type="text" class="form-table-input uppercase fam-par" placeholder="Hermano/a"></td>
       <td class="p-2"><input type="number" class="form-table-input fam-edad" placeholder="Edad"></td>
       <td class="p-2"><input type="text" class="form-table-input uppercase fam-ec" placeholder="Soltero"></td>
-      <td class="p-2"><input type="text" class="form-table-input uppercase fam-inst" placeholder="BÃ¡sica"></td>
+      <td class="p-2"><input type="text" class="form-table-input uppercase fam-inst" placeholder="Básica"></td>
       <td class="p-2"><input type="text" class="form-table-input uppercase fam-ocup" placeholder="Estudiante"></td>
       <td class="p-2 text-center">
         <button type="button" class="btn-remove-familiar text-[var(--apple-text-secondary)] hover:text-[var(--apple-red)] font-bold text-base">&times;</button>
@@ -318,7 +318,7 @@ function validateCurrentStep(step) {
   } else if (step === 7) {
     const firma = document.getElementById('firma_ci')?.value.trim();
     if (!firma) {
-      window.showToast('Ingrese el NÂ° de CÃ©dula del Representante para la firma (*)', 'warning');
+      window.showToast('Ingrese el N° de Cédula del Representante para la firma (*)', 'warning');
       return false;
     }
   }
@@ -366,15 +366,15 @@ function extractFormData() {
   if (document.getElementById('cond_anticresis')?.checked) condVivienda.push('Anticresis');
   if (document.getElementById('cond_prestada')?.checked) condVivienda.push('Prestada');
   if (document.getElementById('cond_compartida')?.checked) condVivienda.push('Compartida');
-  if (document.getElementById('cond_prestamo')?.checked) condVivienda.push('Con prÃ©stamo');
+  if (document.getElementById('cond_prestamo')?.checked) condVivienda.push('Con préstamo');
 
   // Collect Basic Services
   const servBasicos = [];
-  if (document.getElementById('serv_luz')?.checked) servBasicos.push('Luz elÃ©ctrica');
+  if (document.getElementById('serv_luz')?.checked) servBasicos.push('Luz eléctrica');
   if (document.getElementById('serv_agua')?.checked) servBasicos.push('Agua potable');
   if (document.getElementById('serv_sshh')?.checked) servBasicos.push('SSHH');
-  if (document.getElementById('serv_pozo')?.checked) servBasicos.push('Pozo sÃ©ptico');
-  if (document.getElementById('serv_telefono')?.checked) servBasicos.push('TelÃ©fono');
+  if (document.getElementById('serv_pozo')?.checked) servBasicos.push('Pozo séptico');
+  if (document.getElementById('serv_telefono')?.checked) servBasicos.push('Teléfono');
   if (document.getElementById('serv_celular')?.checked) servBasicos.push('Celular');
   if (document.getElementById('serv_internet')?.checked) servBasicos.push('Internet');
   if (document.getElementById('serv_cable')?.checked) servBasicos.push('Cable');
@@ -387,14 +387,14 @@ function extractFormData() {
   const medAtencion = [];
   if (document.getElementById('med_centro_salud')?.checked) medAtencion.push('Centro de salud');
   if (document.getElementById('med_subcentro')?.checked) medAtencion.push('Subcentro de salud');
-  if (document.getElementById('med_hospital_pub')?.checked) medAtencion.push('Hospital pÃºblico');
-  if (document.getElementById('med_clinica_priv')?.checked) medAtencion.push('ClÃ­nica privada');
+  if (document.getElementById('med_hospital_pub')?.checked) medAtencion.push('Hospital público');
+  if (document.getElementById('med_clinica_priv')?.checked) medAtencion.push('Clínica privada');
 
   // Collect Tipo de Parto
   const tipoParto = [];
-  if (document.getElementById('parto_termino')?.checked) tipoParto.push('al tÃ©rmino');
+  if (document.getElementById('parto_termino')?.checked) tipoParto.push('al término');
   if (document.getElementById('parto_prematuro')?.checked) tipoParto.push('Prematuro');
-  if (document.getElementById('parto_cesarea')?.checked) tipoParto.push('CesÃ¡rea');
+  if (document.getElementById('parto_cesarea')?.checked) tipoParto.push('Cesárea');
   if (document.getElementById('parto_normal')?.checked) tipoParto.push('Parto normal');
 
   const cursoVal = document.getElementById('est_curso')?.value || '';
@@ -659,8 +659,8 @@ async function loadDraft() {
 
     const shouldRestore = await window.showAppConfirm({
       title: 'Restaurar Borrador Guardado',
-      message: 'Se encontrÃ³ un borrador en este dispositivo para <b>' + (data.identificacion.estudiante || 'el estudiante') + '</b>.<br><br>Â¿Desea restaurar los datos en el formulario?',
-      confirmText: 'SÃ­, Restaurar Datos',
+      message: 'Se encontró un borrador en este dispositivo para <b>' + (data.identificacion.estudiante || 'el estudiante') + '</b>.<br><br>¿Desea restaurar los datos en el formulario?',
+      confirmText: 'Sí, Restaurar Datos',
       cancelText: 'Descartar',
       iconHtml: '&#128196;'
     });
@@ -761,7 +761,7 @@ function fillFormValues(data) {
               <option value="">Parentesco...</option>
               <option value="HERMANO/A" ${f.parentesco === 'HERMANO/A' ? 'selected' : ''}>Hermano/a</option>
               <option value="ABUELO/A" ${f.parentesco === 'ABUELO/A' ? 'selected' : ''}>Abuelo/a</option>
-              <option value="TÃO/A" ${f.parentesco === 'TÃO/A' ? 'selected' : ''}>TÃ­o/a</option>
+              <option value="TÍO/A" ${f.parentesco === 'TÍO/A' ? 'selected' : ''}>Tío/a</option>
               <option value="PRIMO/A" ${f.parentesco === 'PRIMO/A' ? 'selected' : ''}>Primo/a</option>
               <option value="SOBRINO/A" ${f.parentesco === 'SOBRINO/A' ? 'selected' : ''}>Sobrino/a</option>
               <option value="PADRASTRO" ${f.parentesco === 'PADRASTRO' ? 'selected' : ''}>Padrastro</option>
@@ -777,21 +777,21 @@ function fillFormValues(data) {
               <option value="CASADO/A" ${f.estado_civil === 'CASADO/A' ? 'selected' : ''}>Casado/a</option>
               <option value="DIVORCIADO/A" ${f.estado_civil === 'DIVORCIADO/A' ? 'selected' : ''}>Divorciado/a</option>
               <option value="VIUDO/A" ${f.estado_civil === 'VIUDO/A' ? 'selected' : ''}>Viudo/a</option>
-              <option value="UNIÃ“N LIBRE" ${f.estado_civil === 'UNIÃ“N LIBRE' ? 'selected' : ''}>UniÃ³n Libre</option>
+              <option value="UNIÓN LIBRE" ${f.estado_civil === 'UNIÓN LIBRE' ? 'selected' : ''}>Unión Libre</option>
             </select>
           </td>
           <td class="p-2">
             <select class="form-table-input uppercase fam-inst bg-transparent">
-              <option value="">InstrucciÃ³n...</option>
-              <option value="SIN INSTRUCCIÃ“N" ${f.instruccion === 'SIN INSTRUCCIÃ“N' ? 'selected' : ''}>Sin instrucciÃ³n</option>
+              <option value="">Instrucción...</option>
+              <option value="SIN INSTRUCCIÓN" ${f.instruccion === 'SIN INSTRUCCIÓN' ? 'selected' : ''}>Sin instrucción</option>
               <option value="PRIMARIA" ${f.instruccion === 'PRIMARIA' ? 'selected' : ''}>Primaria</option>
-              <option value="BÃSICA" ${f.instruccion === 'BÃSICA' ? 'selected' : ''}>BÃ¡sica</option>
+              <option value="BÁSICA" ${f.instruccion === 'BÁSICA' ? 'selected' : ''}>Básica</option>
               <option value="BACHILLERATO" ${f.instruccion === 'BACHILLERATO' ? 'selected' : ''}>Bachillerato</option>
               <option value="SUPERIOR" ${f.instruccion === 'SUPERIOR' ? 'selected' : ''}>Superior</option>
               <option value="POSGRADO" ${f.instruccion === 'POSGRADO' ? 'selected' : ''}>Posgrado</option>
             </select>
           </td>
-          <td class="p-2"><input type="text" class="form-table-input uppercase fam-ocup" value="${f.profesion || ''}" placeholder="OcupaciÃ³n / Escuela"></td>
+          <td class="p-2"><input type="text" class="form-table-input uppercase fam-ocup" value="${f.profesion || ''}" placeholder="Ocupación / Escuela"></td>
           <td class="p-2 text-center"><button type="button" class="btn-remove-familiar text-[var(--apple-text-secondary)] hover:text-[var(--apple-red)] font-bold text-base">&times;</button></td>
         `;
         tr.querySelector('.btn-remove-familiar').addEventListener('click', () => tr.remove());
@@ -809,7 +809,7 @@ function fillFormValues(data) {
   if (document.getElementById('cond_anticresis')) document.getElementById('cond_anticresis').checked = hasCond('anticresis');
   if (document.getElementById('cond_prestada')) document.getElementById('cond_prestada').checked = hasCond('prestada');
   if (document.getElementById('cond_compartida')) document.getElementById('cond_compartida').checked = hasCond('compartida');
-  if (document.getElementById('cond_prestamo')) document.getElementById('cond_prestamo').checked = hasCond('prÃ©stamo') || hasCond('prestamo');
+  if (document.getElementById('cond_prestamo')) document.getElementById('cond_prestamo').checked = hasCond('préstamo') || hasCond('prestamo');
 
   const servs = Array.isArray(socio.servicios_basicos) ? socio.servicios_basicos : (socio.servicios_basicos ? [socio.servicios_basicos] : []);
   const hasServ = (val) => servs.some(s => String(s).toLowerCase().includes(val.toLowerCase()));
@@ -817,7 +817,7 @@ function fillFormValues(data) {
   if (document.getElementById('serv_agua')) document.getElementById('serv_agua').checked = hasServ('agua');
   if (document.getElementById('serv_sshh')) document.getElementById('serv_sshh').checked = hasServ('sshh');
   if (document.getElementById('serv_pozo')) document.getElementById('serv_pozo').checked = hasServ('pozo');
-  if (document.getElementById('serv_telefono')) document.getElementById('serv_telefono').checked = hasServ('telÃ©fono') || hasServ('telefono');
+  if (document.getElementById('serv_telefono')) document.getElementById('serv_telefono').checked = hasServ('teléfono') || hasServ('telefono');
   if (document.getElementById('serv_celular')) document.getElementById('serv_celular').checked = hasServ('celular');
   if (document.getElementById('serv_internet')) document.getElementById('serv_internet').checked = hasServ('internet');
   if (document.getElementById('serv_cable')) document.getElementById('serv_cable').checked = hasServ('cable');
@@ -838,10 +838,10 @@ function fillFormValues(data) {
   if (document.getElementById('med_centro_salud')) document.getElementById('med_centro_salud').checked = hasMed('centro');
   if (document.getElementById('med_subcentro')) document.getElementById('med_subcentro').checked = hasMed('subcentro');
   if (document.getElementById('med_hospital_pub')) document.getElementById('med_hospital_pub').checked = hasMed('hospital');
-  if (document.getElementById('med_clinica_priv')) document.getElementById('med_clinica_priv').checked = hasMed('clÃ­nica') || hasMed('clinica');
+  if (document.getElementById('med_clinica_priv')) document.getElementById('med_clinica_priv').checked = hasMed('clínica') || hasMed('clinica');
   if (document.getElementById('salud_med_nota') && s.atencion_medica_nota) document.getElementById('salud_med_nota').value = s.atencion_medica_nota;
 
-  // Punto 6: Datos AcadÃ©micos
+  // Punto 6: Datos Académicos
   const ac = data.datos_academicos || {};
   if (ac.fecha_ingreso) document.getElementById('acad_fecha_ingreso').value = ac.fecha_ingreso;
   if (ac.institucion_procedencia) document.getElementById('acad_inst').value = ac.institucion_procedencia;
@@ -864,9 +864,9 @@ function fillFormValues(data) {
 
   const partos = Array.isArray(hv.tipo_parto) ? hv.tipo_parto : (hv.tipo_parto ? [hv.tipo_parto] : []);
   const hasParto = (val) => partos.some(p => String(p).toLowerCase().includes(val.toLowerCase()));
-  if (document.getElementById('parto_termino')) document.getElementById('parto_termino').checked = hasParto('tÃ©rmino') || hasParto('termino');
+  if (document.getElementById('parto_termino')) document.getElementById('parto_termino').checked = hasParto('término') || hasParto('termino');
   if (document.getElementById('parto_prematuro')) document.getElementById('parto_prematuro').checked = hasParto('prematuro');
-  if (document.getElementById('parto_cesarea')) document.getElementById('parto_cesarea').checked = hasParto('cesÃ¡rea') || hasParto('cesarea');
+  if (document.getElementById('parto_cesarea')) document.getElementById('parto_cesarea').checked = hasParto('cesárea') || hasParto('cesarea');
   if (document.getElementById('parto_normal')) document.getElementById('parto_normal').checked = hasParto('normal');
 
   if (hv.dificultades_embarazo) document.getElementById('hist_dif_embarazo').value = hv.dificultades_embarazo;
@@ -885,7 +885,7 @@ function fillFormValues(data) {
   if (hv.perdidas_conocimiento) document.getElementById('hist_perdidas_desc').value = hv.perdidas_conocimiento;
   if (hv.otros_salud_infancia) document.getElementById('hist_otros_salud_desc').value = hv.otros_salud_infancia;
 
-  // Antecedentes patolÃ³gicos
+  // Antecedentes patológicos
   const patol = data.antecedentes_patologicos || {};
   if (document.getElementById('patol_obesidad')) document.getElementById('patol_obesidad').checked = !!patol.obesidad;
   if (document.getElementById('patol_cardiacas')) document.getElementById('patol_cardiacas').checked = !!patol.enfermedades_cardiacas;
