@@ -579,17 +579,21 @@ function setupFormSubmission() {
         }
       } catch (fetchErr) {}
 
-      // 3. Respaldo en memoria local del navegador
-      let localRecords = [];
+      // 3. Respaldo en memoria local del navegador (versión ligera sin croquis para no agotar cuota)
       try {
-        localRecords = JSON.parse(localStorage.getItem('dece_saved_records') || '[]');
-      } catch (e) { localRecords = []; }
-      localRecords = localRecords.filter(r => r && r.id !== payload.id);
-      localRecords.unshift(payload);
-      try {
-        localStorage.setItem('dece_saved_records', JSON.stringify(localRecords));
+        let localRecords = JSON.parse(localStorage.getItem('dece_saved_records') || '[]');
+        if (!Array.isArray(localRecords)) localRecords = [];
+        localRecords = localRecords.filter(r => r && r.id !== payload.id);
+        const lightPayload = { ...payload };
+        if (lightPayload.identificacion) {
+          lightPayload.identificacion = { ...lightPayload.identificacion };
+          delete lightPayload.identificacion.croquis_data;
+        }
+        delete lightPayload.croquis_data;
+        localRecords.unshift(lightPayload);
+        localStorage.setItem('dece_saved_records', JSON.stringify(localRecords.slice(0, 50)));
       } catch (e) {
-        console.warn('Quota exceeded on localStorage', e);
+        console.warn('Quota exceeded on localStorage handled safely:', e);
       }
       recordData = payload;
 

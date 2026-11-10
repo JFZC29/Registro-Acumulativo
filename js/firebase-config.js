@@ -128,7 +128,11 @@
         if (res.ok) {
           const data = await res.json();
           if (data && typeof data === 'object') {
-            const list = Object.keys(data).map(k => data[k]).filter(Boolean);
+            const list = Object.keys(data).map(k => {
+              const item = data[k];
+              if (item && !item.id) item.id = k;
+              return item;
+            }).filter(Boolean);
             list.sort((a, b) => new Date(b.created_at || b.createdAt || 0) - new Date(a.created_at || a.createdAt || 0));
             return list;
           }
@@ -145,7 +149,11 @@
           const snapshot = await db.ref('records').once('value');
           const data = snapshot.val();
           if (data) {
-            const list = Object.keys(data).map(k => data[k]).filter(Boolean);
+            const list = Object.keys(data).map(k => {
+              const item = data[k];
+              if (item && !item.id) item.id = k;
+              return item;
+            }).filter(Boolean);
             list.sort((a, b) => new Date(b.created_at || b.createdAt || 0) - new Date(a.created_at || a.createdAt || 0));
             return list;
           }
@@ -165,7 +173,11 @@
               callback([]);
               return;
             }
-            const list = Object.keys(data).map(k => data[k]).filter(Boolean);
+            const list = Object.keys(data).map(k => {
+              const item = data[k];
+              if (item && !item.id) item.id = k;
+              return item;
+            }).filter(Boolean);
             list.sort((a, b) => new Date(b.created_at || b.createdAt || 0) - new Date(a.created_at || a.createdAt || 0));
             callback(list);
           });

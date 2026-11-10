@@ -16,12 +16,13 @@
   }
 };
 
-ï»¿// Admin Panel Management Script
+// Admin Panel Management Script
 let adminCroquis = null;
 let currentRecord = null;
 let currentPage = 1;
 let currentSearch = '';
 let currentCourse = '';
+let inMemoryRecords = [];
 
 function updateCloudStatusUI() {
   const isConf = window.FirebaseDB && window.FirebaseDB.isConfigured();
@@ -56,13 +57,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupAdminCroquisTools();
 
   // 5. Cargar Datos
-  loadStats();
-  loadRecords();
+  await loadStats();
+  await loadRecords();
 
   // 6. Escucha en tiempo real de Firebase
   if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
     window.FirebaseDB.onRecordsChange((newRecords) => {
       if (newRecords && Array.isArray(newRecords)) {
+        inMemoryRecords = newRecords;
         setLocalRecords(newRecords);
         loadStats();
         loadRecords(currentPage);
@@ -70,7 +72,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 7. Cálculo de edad
+  // 7. Polling de respaldo cada 12 segundos para mantener datos sincronizados automáticamente
+  setInterval(async () => {
+    if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+      try {
+        const latest = await window.FirebaseDB.getRecords();
+        if (latest && Array.isArray(latest) && latest.length !== inMemoryRecords.length) {
+          inMemoryRecords = latest;
+          setLocalRecords(latest);
+          loadStats();
+          loadRecords(currentPage);
+        }
+      } catch (e) {}
+    }
+  }, 12000);
+
+  // 8. Cálculo de edad
   setupAdminAgeCalculation();
 });
 
@@ -84,9 +101,22 @@ function getLocalRecords() {
 
 function setLocalRecords(recs) {
   try {
-    localStorage.setItem('dece_saved_records', JSON.stringify(recs));
+    if (!Array.isArray(recs)) return;
+    // Guardar versión ligera sin croquis base64 pesado para no exceder cuota de localStorage (5MB)
+    const light = recs.map(r => {
+      if (!r || typeof r !== 'object') return r;
+      const copy = { ...r };
+      delete copy.croquis_data;
+      delete copy.croquis_image;
+      if (copy.identificacion && copy.identificacion.croquis_data) {
+        copy.identificacion = { ...copy.identificacion };
+        delete copy.identificacion.croquis_data;
+      }
+      return copy;
+    });
+    localStorage.setItem('dece_saved_records', JSON.stringify(light));
   } catch (e) {
-    console.warn('LocalStorage save error:', e);
+    console.warn('LocalStorage save warning (cuota controlada):', e);
   }
 }
 
@@ -96,6 +126,7 @@ async function initLocalRecords() {
     try {
       const cloudRecs = await window.FirebaseDB.getRecords();
       if (cloudRecs && Array.isArray(cloudRecs) && cloudRecs.length > 0) {
+        inMemoryRecords = cloudRecs;
         setLocalRecords(cloudRecs);
         return cloudRecs;
       }
@@ -122,12 +153,9 @@ async function initLocalRecords() {
   seed.forEach(r => { if (r && r.id && !map.has(r.id)) map.set(r.id, r); });
 
   const merged = Array.from(map.values());
+  inMemoryRecords = merged;
   setLocalRecords(merged);
   return merged;
-}
-
-function setLocalRecords(recs) {
-  localStorage.setItem('dece_saved_records', JSON.stringify(recs));
 }
 
 // Auth Check
@@ -142,7 +170,7 @@ async function checkAuth() {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     if (res.ok) {
-      if (!res.ok) throw new Error('API Offline'); const data = await res.json();
+      const data = await res.json();
       const display = document.getElementById('admin-user-display');
       if (display && data.user) display.textContent = data.user.name || data.user.username;
     } else {
@@ -159,21 +187,27 @@ async function checkAuth() {
 async function loadStats() {
   const token = localStorage.getItem('dece_admin_token');
   let stats = null;
-  try {
-    const res = await fetch('/api/stats', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error('API Offline'); const data = await res.json();
-    if (data.success && data.stats) stats = data.stats;
-  } catch (err) {
-    // Fallback local
-    const recs = await initLocalRecords();
+
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    try {
+      const res = await fetch('/api/stats', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.stats) stats = data.stats;
+      }
+    } catch (err) {}
+  }
+
+  if (!stats) {
+    let recs = inMemoryRecords.length ? inMemoryRecords : await initLocalRecords();
     const byCourse = {};
     let withDisability = 0;
     recs.forEach(r => {
       const c = r.identificacion?.curso || 'Sin especificar';
       byCourse[c] = (byCourse[c] || 0) + 1;
-      if (r.datos_salud?.discapacidad === 'SÃ­' || r.datos_salud?.discapacidad === 'SI') withDisability++;
+      if (r.datos_salud?.discapacidad === 'Sí' || r.datos_salud?.discapacidad === 'SI') withDisability++;
     });
     stats = {
       totalRecords: recs.length,
@@ -192,6 +226,7 @@ async function loadStats() {
 
     const courseSelect = document.getElementById('admin-filter-curso');
     if (courseSelect) {
+      const prevVal = courseSelect.value;
       courseSelect.innerHTML = '<option value="">Todos los cursos</option>';
       Object.keys(stats.byCourse || {}).sort().forEach(c => {
         if (c && c !== 'Sin especificar') {
@@ -201,6 +236,7 @@ async function loadStats() {
           courseSelect.appendChild(opt);
         }
       });
+      if (prevVal) courseSelect.value = prevVal;
     }
   }
 }
@@ -208,9 +244,9 @@ async function loadStats() {
 // Load Records Table
 async function loadRecords(page = 1) {
   currentPage = page;
-  const token = localStorage.getItem('dece_admin_token');
   const tbody = document.getElementById('records-table-body');
-  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-10 text-slate-400 font-medium">Cargando registros...</td></tr>';
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center py-10 text-[var(--apple-text-secondary)] font-medium">Cargando registros...</td></tr>';
 
   let records = [];
   let total = 0;
@@ -218,101 +254,128 @@ async function loadRecords(page = 1) {
   const limit = 15;
 
   try {
-    const params = new URLSearchParams({
-      page,
-      limit,
-      search: currentSearch,
-      curso: currentCourse
-    });
+    let all = null;
 
-    const res = await fetch(`/api/records?${params}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error('API Offline'); const data = await res.json();
-    if (data.records) {
-      records = data.records;
-      total = data.total || 0;
-      totalPages = data.totalPages || 1;
-    } else {
-      throw new Error('No records returned');
+    // Prioridad 1: Nube Firebase (inmediato y sincronizado)
+    if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+      try {
+        all = await window.FirebaseDB.getRecords();
+        if (all && Array.isArray(all) && all.length > 0) {
+          inMemoryRecords = all;
+          setLocalRecords(all);
+        }
+      } catch (fbErr) {
+        console.warn('Firebase getRecords fallback:', fbErr);
+      }
     }
-  } catch (fetchErr) {
-    let all = await initLocalRecords();
-    if (currentSearch) {
-      const q = currentSearch.toLowerCase();
-      all = all.filter(r => 
-        (r.identificacion?.estudiante || '').toLowerCase().includes(q) ||
-        (r.identificacion?.num_identificacion || '').toLowerCase().includes(q) ||
-        (r.datos_familiares?.representante?.nombre || '').toLowerCase().includes(q)
-      );
-    }
-    if (currentCourse) {
-      all = all.filter(r => (r.identificacion?.curso || '').includes(currentCourse));
-    }
-    total = all.length;
-    totalPages = Math.max(1, Math.ceil(total / limit));
-    const start = (page - 1) * limit;
-    records = all.slice(start, start + limit);
-  }
 
-  if (!records || records.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="7" class="text-center py-12 text-slate-400">
-          <div class="text-4xl mb-2">&#128237;</div>
-          <p class="font-bold text-sm text-slate-600">No se encontraron registros</p>
-          <p class="text-xs text-slate-400 mt-0.5">Intente con otros tÃ©rminos de bÃºsqueda o cree un nuevo registro.</p>
-        </td>
-      </tr>
-    `;
-    document.getElementById('pagination-info').textContent = 'Mostrando 0 registros';
-    return;
-  }
+    // Prioridad 2: API local si estamos en localhost
+    if ((!all || all.length === 0) && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      try {
+        const token = localStorage.getItem('dece_admin_token');
+        const params = new URLSearchParams({
+          page,
+          limit,
+          search: currentSearch,
+          curso: currentCourse
+        });
+        const res = await fetch(`/api/records?${params}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.records) {
+            records = data.records;
+            total = data.total || 0;
+            totalPages = data.totalPages || 1;
+          }
+        }
+      } catch (e) {}
+    }
 
-  tbody.innerHTML = '';
-  records.forEach(record => {
+    // Si aún no tenemos registros divididos por página, procesar 'all'
+    if (!records.length) {
+      if (!all || all.length === 0) {
+        all = inMemoryRecords.length ? inMemoryRecords : await initLocalRecords();
+      }
+
+      let filtered = [...all];
+      if (currentSearch) {
+        const q = currentSearch.toLowerCase().trim();
+        filtered = filtered.filter(r => 
+          (r.identificacion?.estudiante || '').toLowerCase().includes(q) ||
+          (r.identificacion?.num_identificacion || '').toLowerCase().includes(q) ||
+          (r.datos_familiares?.representante?.nombre || '').toLowerCase().includes(q)
+        );
+      }
+      if (currentCourse) {
+        filtered = filtered.filter(r => (r.identificacion?.curso || '').includes(currentCourse));
+      }
+      total = filtered.length;
+      totalPages = Math.max(1, Math.ceil(total / limit));
+      const start = (page - 1) * limit;
+      records = filtered.slice(start, start + limit);
+    }
+
+    if (!records || records.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="text-center py-12 text-slate-400">
+            <div class="text-4xl mb-2">&#128237;</div>
+            <p class="font-bold text-sm text-slate-600 dark:text-slate-300">No se encontraron registros</p>
+            <p class="text-xs text-slate-400 mt-0.5">Aún no hay registros en la base de datos o que coincidan con la búsqueda.</p>
+          </td>
+        </tr>
+      `;
+      const pagInfo = document.getElementById('pagination-info');
+      if (pagInfo) pagInfo.textContent = 'Mostrando 0 registros';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    records.forEach(record => {
       const ident = record.identificacion || {};
       const rep = record.datos_familiares?.representante || {};
       const regDate = record.createdAt ? new Date(record.createdAt).toLocaleDateString() : (record.created_at ? new Date(record.created_at).toLocaleDateString() : 'N/A');
-      const hasDisc = record.datos_salud?.discapacidad === 'SÃ­' || record.datos_salud?.discapacidad === 'SI';
+      const hasDisc = record.datos_salud?.discapacidad === 'Sí' || record.datos_salud?.discapacidad === 'SI';
       const studentName = ident.estudiante || 'Sin nombre';
       const initial = studentName.charAt(0).toUpperCase() || 'E';
 
       const tr = document.createElement('tr');
-      tr.className = 'hover:bg-blue-50/40 transition border-b border-slate-100 group';
+      tr.className = 'hover:bg-blue-50/40 dark:hover:bg-slate-800/40 transition border-b border-[var(--apple-border)] group';
       tr.innerHTML = `
         <td class="py-3.5 px-4">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-extrabold flex items-center justify-center text-xs flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 font-extrabold flex items-center justify-center text-xs flex-shrink-0">
               ${initial}
             </div>
             <div>
-              <div class="font-bold text-slate-900 leading-tight">${studentName}</div>
+              <div class="font-bold text-[var(--apple-text-primary)] leading-tight">${studentName}</div>
               ${hasDisc ? '<span class="inline-block mt-0.5 px-2 py-0.2 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">&#9855; Discapacidad</span>' : ''}
             </div>
           </div>
         </td>
-        <td class="py-3.5 px-3 font-mono font-medium text-slate-700">${ident.num_identificacion || 'â€”'}</td>
+        <td class="py-3.5 px-3 font-mono font-medium text-[var(--apple-text-secondary)]">${ident.num_identificacion || '—'}</td>
         <td class="py-3.5 px-3">
-          <span class="inline-flex px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200/60">
-            ${ident.curso || 'â€”'}
+          <span class="inline-flex px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[var(--apple-input-bg)] text-[var(--apple-text-primary)] border border-[var(--apple-border)]">
+            ${ident.curso || '—'}
           </span>
         </td>
-        <td class="py-3.5 px-3 text-slate-700 font-medium">${rep.nombre || 'â€”'}</td>
-        <td class="py-3.5 px-3 text-slate-600 font-mono text-[11px]">${ident.celular || ident.telefono || rep.telefonos || 'â€”'}</td>
-        <td class="py-3.5 px-3 text-slate-500 text-[11px]">${regDate}</td>
+        <td class="py-3.5 px-3 text-[var(--apple-text-primary)] font-medium">${rep.nombre || '—'}</td>
+        <td class="py-3.5 px-3 text-[var(--apple-text-secondary)] font-mono text-[11px]">${ident.celular || ident.telefono || rep.telefonos || '—'}</td>
+        <td class="py-3.5 px-3 text-[var(--apple-text-secondary)] text-[11px]">${regDate}</td>
         <td class="py-3.5 px-4 text-center">
           <div class="inline-flex items-center gap-1.5">
-            <button type="button" class="btn-pdf-row px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-xs font-bold border border-blue-100 transition shadow-sm" title="Descargar PDF">
+            <button type="button" class="btn-pdf-row px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-bold border border-blue-100 dark:border-blue-800 transition shadow-sm" title="Descargar PDF">
               &#128229; PDF
             </button>
-            <button type="button" class="btn-preview-row p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs transition" title="Ver Vista Previa">
+            <button type="button" class="btn-preview-row p-1.5 bg-[var(--apple-input-bg)] hover:opacity-80 text-[var(--apple-text-primary)] rounded-lg text-xs transition" title="Ver Vista Previa">
               &#128065;
             </button>
-            <button type="button" class="btn-edit-row p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs border border-amber-100 transition" title="Editar">
+            <button type="button" class="btn-edit-row p-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg text-xs border border-amber-100 dark:border-amber-800 transition" title="Editar">
               &#9998;
             </button>
-            <button type="button" class="btn-delete-row p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg text-xs border border-rose-100 transition" title="Eliminar">
+            <button type="button" class="btn-delete-row p-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-lg text-xs border border-rose-100 dark:border-rose-800 transition" title="Eliminar">
               &#128465;&#65039;
             </button>
           </div>
@@ -329,6 +392,27 @@ async function loadRecords(page = 1) {
     });
 
     // Pagination Controls
+    const pagInfo = document.getElementById('pagination-info');
+    if (pagInfo) pagInfo.textContent = `Mostrando ${records.length} de ${total} registros (Página ${page} de ${totalPages})`;
+    const pageInd = document.getElementById('page-indicator');
+    if (pageInd) pageInd.textContent = `Página ${page} de ${totalPages}`;
+
+    const prevBtn = document.getElementById('btn-prev-page');
+    const nextBtn = document.getElementById('btn-next-page');
+    if (prevBtn) {
+      prevBtn.disabled = page <= 1;
+      prevBtn.onclick = () => loadRecords(page - 1);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = page >= totalPages;
+      nextBtn.onclick = () => loadRecords(page + 1);
+    }
+
+  } catch (err) {
+    console.error('Error loading records:', err);
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-500 font-semibold">Error al cargar registros</td></tr>';
+  }
+}
     document.getElementById('pagination-info').textContent = `Mostrando ${records.length} de ${total} registros (PÃ¡gina ${page} de ${totalPages})`;
     document.getElementById('page-indicator').textContent = `PÃ¡gina ${page} de ${totalPages}`;
 
@@ -427,6 +511,7 @@ function setupAdminButtons() {
         if (window.FirebaseDB) {
           window.FirebaseDB.onRecordsChange((newRecords) => {
             if (newRecords && Array.isArray(newRecords)) {
+              inMemoryRecords = newRecords;
               setLocalRecords(newRecords);
               loadStats();
               loadRecords(currentPage);
@@ -443,6 +528,7 @@ function setupAdminButtons() {
   if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
     window.FirebaseDB.onRecordsChange((newRecords) => {
       if (newRecords && Array.isArray(newRecords)) {
+        inMemoryRecords = newRecords;
         setLocalRecords(newRecords);
         loadStats();
         loadRecords(currentPage);
@@ -945,6 +1031,15 @@ async function saveEditorRecord() {
       }
     }
 
+    // Actualizar también registros en memoria
+    const memIdx = inMemoryRecords.findIndex(r => r && r.id === payload.id);
+    if (memIdx !== -1) {
+      inMemoryRecords[memIdx] = payload;
+    } else {
+      inMemoryRecords.unshift(payload);
+    }
+    setLocalRecords(inMemoryRecords);
+
     window.showToast('Registro guardado exitosamente', 'success');
     closeEditorModal();
     loadStats();
@@ -953,7 +1048,7 @@ async function saveEditorRecord() {
     window.showToast(err.message || 'Error al guardar', 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'ðŸ’¾ Guardar Cambios';
+    btn.textContent = '💾 Guardar Cambios';
   }
 }
 
@@ -961,7 +1056,7 @@ async function saveEditorRecord() {
 async function deleteRecord(id, studentName) {
   const confirmed = await window.showAppConfirm({
     title: 'Eliminar Registro',
-    message: 'Â¿EstÃ¡ seguro de eliminar permanentemente el registro de <b>' + (studentName || 'este estudiante') + '</b>?<br><br><span class="text-red-500 font-semibold">Esta acciÃ³n no se puede deshacer.</span>',
+    message: '¿Está seguro de eliminar permanentemente el registro de <b>' + (studentName || 'este estudiante') + '</b>?<br><br><span class="text-red-500 font-semibold">Esta acción no se puede deshacer.</span>',
     confirmText: 'Eliminar Registro',
     cancelText: 'Cancelar',
     isDanger: true
@@ -978,19 +1073,19 @@ async function deleteRecord(id, studentName) {
       });
       if (!res.ok) throw new Error('API delete failed');
     } catch (fetchErr) {
-      let recs = getLocalRecords();
-      recs = recs.filter(r => r.id !== id);
-      setLocalRecords(recs);
-      if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
-        try { window.FirebaseDB.deleteRecord(id); } catch (e) {}
-      }
-      if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
-        try {
-          const saveItem = id ? (recs.find(r => r.id === id) || payload) : payload;
-          window.FirebaseDB.saveRecord(saveItem);
-        } catch (e) {}
-      }
+      // Si la API local falla o estamos en GitHub Pages
     }
+
+    // 1. Eliminar en Firebase Cloud
+    if (window.FirebaseDB && window.FirebaseDB.isConfigured()) {
+      try { await window.FirebaseDB.deleteRecord(id); } catch (e) {}
+    }
+
+    // 2. Eliminar en memoria y local
+    inMemoryRecords = inMemoryRecords.filter(r => r && r.id !== id);
+    let recs = getLocalRecords();
+    recs = recs.filter(r => r && r.id !== id);
+    setLocalRecords(recs);
 
     window.showToast('Registro eliminado correctamente', 'success');
     loadStats();
