@@ -423,22 +423,6 @@ async function loadRecords(page = 1) {
     tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-500 font-semibold">Error al cargar registros</td></tr>';
   }
 }
-    document.getElementById('pagination-info').textContent = `Mostrando ${records.length} de ${total} registros (Página ${page} de ${totalPages})`;
-    document.getElementById('page-indicator').textContent = `Página ${page} de ${totalPages}`;
-
-    const prevBtn = document.getElementById('btn-prev-page');
-    const nextBtn = document.getElementById('btn-next-page');
-    prevBtn.disabled = page <= 1;
-    nextBtn.disabled = page >= totalPages;
-
-    prevBtn.onclick = () => loadRecords(page - 1);
-    nextBtn.onclick = () => loadRecords(page + 1);
-
-  } catch (err) {
-    console.error('Error loading records:', err);
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-500 font-semibold">Error al cargar registros</td></tr>';
-  }
-}
 // Search & Filter listeners
 function setupSearchAndFilters() {
   const searchInput = document.getElementById('admin-search-input');
