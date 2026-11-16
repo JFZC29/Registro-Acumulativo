@@ -52,6 +52,24 @@ function buildPDFPagesHTML(record) {
   const ing = socio.ingresos || {};
   const egr = socio.egresos || {};
   const salud = record.datos_salud || {};
+
+  const numOrZero = val => {
+    if (val === undefined || val === null || val === '') return 0;
+    const n = parseFloat(String(val).replace(/[^0-9.-]/g, ''));
+    return isNaN(n) ? 0 : n;
+  };
+
+  const calcIng = numOrZero(ing.padre) + numOrZero(ing.madre) + numOrZero(ing.hermanos) + numOrZero(ing.tios) + numOrZero(ing.abuelos) + numOrZero(ing.otros);
+  const totalIngDisplay = (ing.total !== undefined && ing.total !== '' && numOrZero(ing.total) > 0)
+    ? numOrZero(ing.total).toFixed(2)
+    : (calcIng > 0 ? calcIng.toFixed(2) : (ing.total || '0.00'));
+
+  const calcEgr = numOrZero(egr.alimentacion) + numOrZero(egr.educacion) + numOrZero(egr.vivienda) +
+                  numOrZero(egr.servicios_basicos || egr.servicios) + numOrZero(egr.transporte) +
+                  numOrZero(egr.salud) + numOrZero(egr.vestimenta) + numOrZero(egr.otros);
+  const totalEgrDisplay = (egr.total !== undefined && egr.total !== '' && numOrZero(egr.total) > 0)
+    ? numOrZero(egr.total).toFixed(2)
+    : (calcEgr > 0 ? calcEgr.toFixed(2) : (egr.total || '0.00'));
   const acad = record.datos_academicos || {};
   const hist = record.historia_vital || {};
   const patol = record.antecedentes_patologicos || {};
@@ -285,7 +303,7 @@ function buildPDFPagesHTML(record) {
             '<td class="field-label">T\u00edos / as:</td>' +
             '<td style="text-align: right;" class="pdf-val">' + esc(ing.tios || '') + '</td>' +
             '<td class="field-label">Servicios b\u00e1sicos:</td>' +
-            '<td style="text-align: right;" class="pdf-val">' + esc(egr.servicios_basicos || '') + '</td>' +
+            '<td style="text-align: right;" class="pdf-val">' + esc(egr.servicios_basicos || egr.servicios || '') + '</td>' +
           '</tr>' +
           '<tr>' +
             '<td class="field-label">Abuelos:</td>' +
@@ -299,11 +317,23 @@ function buildPDFPagesHTML(record) {
             '<td class="field-label">Salud:</td>' +
             '<td style="text-align: right;" class="pdf-val">' + esc(egr.salud || '') + '</td>' +
           '</tr>' +
+          '<tr>' +
+            '<td class="field-label"></td>' +
+            '<td style="text-align: right;" class="pdf-val"></td>' +
+            '<td class="field-label">Vestimenta:</td>' +
+            '<td style="text-align: right;" class="pdf-val">' + esc(egr.vestimenta || '') + '</td>' +
+          '</tr>' +
+          '<tr>' +
+            '<td class="field-label"></td>' +
+            '<td style="text-align: right;" class="pdf-val"></td>' +
+            '<td class="field-label">Otros:</td>' +
+            '<td style="text-align: right;" class="pdf-val">' + esc(egr.otros || '') + '</td>' +
+          '</tr>' +
           '<tr style="font-weight: bold; background-color: #fafafa;">' +
             '<td>Total:</td>' +
-            '<td style="text-align: right;" class="pdf-val">' + esc(ing.total || '') + '</td>' +
+            '<td style="text-align: right;" class="pdf-val">' + esc(totalIngDisplay) + '</td>' +
             '<td>Total:</td>' +
-            '<td style="text-align: right;" class="pdf-val">' + esc(egr.total || '') + '</td>' +
+            '<td style="text-align: right;" class="pdf-val">' + esc(totalEgrDisplay) + '</td>' +
           '</tr>' +
         '</tbody>' +
       '</table>' +

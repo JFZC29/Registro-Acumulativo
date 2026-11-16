@@ -912,9 +912,11 @@ async function saveEditorRecord() {
     },
     referencias_socioeconomicas: {
       ingresos: {
+        ...(currentRecord?.referencias_socioeconomicas?.ingresos || {}),
         total: document.getElementById('a_ing_total').value || '0.00'
       },
       egresos: {
+        ...(currentRecord?.referencias_socioeconomicas?.egresos || {}),
         total: document.getElementById('a_egr_total').value || '0.00'
       },
       condicion_vivienda: condVivienda,

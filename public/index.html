@@ -507,7 +507,9 @@
               <div class="space-y-2">
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Padre:</span><input type="number" step="0.01" id="ing_padre" name="socio.ingresos.padre" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Madre:</span><input type="number" step="0.01" id="ing_madre" name="socio.ingresos.madre" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
-                <div class="flex items-center justify-between gap-3"><span class="apple-label">Hermanos:</span><input type="number" step="0.01" id="ing_hermanos" name="socio.ingresos.hermanos" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
+                <div class="flex items-center justify-between gap-3"><span class="apple-label">Hermanos / as:</span><input type="number" step="0.01" id="ing_hermanos" name="socio.ingresos.hermanos" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
+                <div class="flex items-center justify-between gap-3"><span class="apple-label">Tíos / as:</span><input type="number" step="0.01" id="ing_tios" name="socio.ingresos.tios" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
+                <div class="flex items-center justify-between gap-3"><span class="apple-label">Abuelos:</span><input type="number" step="0.01" id="ing_abuelos" name="socio.ingresos.abuelos" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Otros:</span><input type="number" step="0.01" id="ing_otros" name="socio.ingresos.otros" value="0" class="form-table-input calc-ing text-right w-32 font-mono"></div>
                 <div class="flex items-center justify-between gap-3 pt-2.5 border-t border-[var(--apple-green)]/20 font-bold text-[var(--apple-green)]">
                   <span>TOTAL INGRESOS:</span>
@@ -524,12 +526,12 @@
               </h4>
               <div class="space-y-1.5">
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Alimentación:</span><input type="number" step="0.01" id="egr_alim" name="socio.egresos.alimentacion" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
-                <div class="flex items-center justify-between gap-3"><span class="apple-label">Salud:</span><input type="number" step="0.01" id="egr_salud" name="socio.egresos.salud" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
-                <div class="flex items-center justify-between gap-3"><span class="apple-label">Vivienda:</span><input type="number" step="0.01" id="egr_viv" name="socio.egresos.vivienda" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Educación:</span><input type="number" step="0.01" id="egr_educ" name="socio.egresos.educacion" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
+                <div class="flex items-center justify-between gap-3"><span class="apple-label">Vivienda:</span><input type="number" step="0.01" id="egr_viv" name="socio.egresos.vivienda" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
+                <div class="flex items-center justify-between gap-3"><span class="apple-label">Servicios básicos:</span><input type="number" step="0.01" id="egr_serv" name="socio.egresos.servicios_basicos" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Transporte:</span><input type="number" step="0.01" id="egr_trans" name="socio.egresos.transporte" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
+                <div class="flex items-center justify-between gap-3"><span class="apple-label">Salud:</span><input type="number" step="0.01" id="egr_salud" name="socio.egresos.salud" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Vestimenta:</span><input type="number" step="0.01" id="egr_vest" name="socio.egresos.vestimenta" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
-                <div class="flex items-center justify-between gap-3"><span class="apple-label">Servicios:</span><input type="number" step="0.01" id="egr_serv" name="socio.egresos.servicios" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
                 <div class="flex items-center justify-between gap-3"><span class="apple-label">Otros:</span><input type="number" step="0.01" id="egr_otros" name="socio.egresos.otros" value="0" class="form-table-input calc-egr text-right w-28 font-mono"></div>
                 <div class="flex items-center justify-between gap-3 pt-2 border-t border-[var(--apple-red)]/20 font-bold text-[var(--apple-red)]">
                   <span>TOTAL EGRESOS:</span>
@@ -1177,12 +1179,12 @@
     <!-- Firebase Cloud SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="./js/firebase-config.js?v=6.0"></script>
+  <script src="./js/firebase-config.js?v=7.0"></script>
   <!-- Scripts -->
-  <script src="./js/dialogs.js?v=6.0"></script>
-  <script src="./js/croquis.js?v=6.0"></script>
-  <script src="./js/pdf-generator.js?v=6.0"></script>
-  <script src="./js/app.js?v=6.0"></script>
+  <script src="./js/dialogs.js?v=7.0"></script>
+  <script src="./js/croquis.js?v=7.0"></script>
+  <script src="./js/pdf-generator.js?v=7.0"></script>
+  <script src="./js/app.js?v=7.0"></script>
 </body>
 </html>
 

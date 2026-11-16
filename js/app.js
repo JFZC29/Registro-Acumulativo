@@ -346,8 +346,10 @@ function extractFormData() {
   const ingPadre = parseFloat(document.getElementById('ing_padre')?.value) || 0;
   const ingMadre = parseFloat(document.getElementById('ing_madre')?.value) || 0;
   const ingHermanos = parseFloat(document.getElementById('ing_hermanos')?.value) || 0;
+  const ingTios = parseFloat(document.getElementById('ing_tios')?.value) || 0;
+  const ingAbuelos = parseFloat(document.getElementById('ing_abuelos')?.value) || 0;
   const ingOtros = parseFloat(document.getElementById('ing_otros')?.value) || 0;
-  const totalIngresos = (ingPadre + ingMadre + ingHermanos + ingOtros).toFixed(2);
+  const totalIngresos = (ingPadre + ingMadre + ingHermanos + ingTios + ingAbuelos + ingOtros).toFixed(2);
 
   const egrAlim = parseFloat(document.getElementById('egr_alim')?.value) || 0;
   const egrSalud = parseFloat(document.getElementById('egr_salud')?.value) || 0;
@@ -355,7 +357,7 @@ function extractFormData() {
   const egrEduc = parseFloat(document.getElementById('egr_educ')?.value) || 0;
   const egrTrans = parseFloat(document.getElementById('egr_trans')?.value) || 0;
   const egrVest = parseFloat(document.getElementById('egr_vest')?.value) || 0;
-  const egrServ = parseFloat(document.getElementById('egr_serv')?.value) || 0;
+  const egrServ = parseFloat(document.getElementById('egr_serv')?.value || document.getElementById('egr_servicios')?.value || document.getElementById('egr_servicios_basicos')?.value) || 0;
   const egrOtros = parseFloat(document.getElementById('egr_otros')?.value) || 0;
   const totalEgresos = (egrAlim + egrSalud + egrViv + egrEduc + egrTrans + egrVest + egrServ + egrOtros).toFixed(2);
 
@@ -452,6 +454,8 @@ function extractFormData() {
         padre: String(ingPadre),
         madre: String(ingMadre),
         hermanos: String(ingHermanos),
+        tios: String(ingTios),
+        abuelos: String(ingAbuelos),
         otros: String(ingOtros),
         total: totalIngresos
       },
@@ -463,6 +467,7 @@ function extractFormData() {
         transporte: String(egrTrans),
         vestimenta: String(egrVest),
         servicios: String(egrServ),
+        servicios_basicos: String(egrServ),
         otros: String(egrOtros),
         total: totalEgresos
       },
