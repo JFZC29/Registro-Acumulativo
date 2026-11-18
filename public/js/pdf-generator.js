@@ -1,4 +1,4 @@
-// PDF Generator Module for 4-Page Cumulative Record
+// PDF Generator Module for 3-Page Cumulative Record (Optimized Layout)
 
 function esc(val) {
   if (val === undefined || val === null) return '';
@@ -239,14 +239,11 @@ function buildPDFPagesHTML(record) {
           '<td colspan="2"><strong>Tipo de discapacidad:</strong> <span class="pdf-val">' + esc(refFam.tipo_discapacidad_familiar) + '</span></td>' +
         '</tr>' +
       '</table>' +
-    '</div>' +
 
-    '<!-- PAGE 2 -->' +
-    '<div class="pdf-page-pdf" id="pdf-page-2">' +
-      '<div style="font-size: 7.6pt; font-weight: bold; margin-bottom: 3px;">' +
+      '<div style="font-size: 7.6pt; font-weight: bold; margin-top: 4px; margin-bottom: 3px;">' +
         'OTROS FAMILIARES: <span style="font-weight: normal;">(Miembros del grupo familiar que viven bajo el mismo techo y que no se nombraron arriba. Para los hermanos/as que estudian se especifica el centro educativo)</span>' +
       '</div>' +
-      '<table class="pdf-table" style="margin-bottom: 5px;">' +
+      '<table class="pdf-table">' +
         '<thead>' +
           '<tr>' +
             '<th style="width: 28%;">Nombres y Apellidos</th>' +
@@ -270,7 +267,10 @@ function buildPDFPagesHTML(record) {
           ).join('') +
         '</tbody>' +
       '</table>' +
+    '</div>' +
 
+    '<!-- PAGE 2 -->' +
+    '<div class="pdf-page-pdf" id="pdf-page-2">' +
       '<div class="pdf-section-title">4. REFERENCIAS SOCIOECONOMICAS GENERALES :</div>' +
       '<div class="pdf-section-subtitle">Ingresos / Egresos mensuales del hogar :</div>' +
       '<table class="pdf-table" style="margin-bottom: 5px;">' +
@@ -418,11 +418,8 @@ function buildPDFPagesHTML(record) {
           '<td colspan="6" class="pdf-val">' + esc(salud.medicamentos) + '</td>' +
         '</tr>' +
       '</table>' +
-    '</div>' +
 
-    '<!-- PAGE 3 -->' +
-    '<div class="pdf-page-pdf" id="pdf-page-3">' +
-      '<div style="font-size: 7.8pt; font-weight: bold; margin-bottom: 2px;">El estudiante recibe atenci\u00f3n m\u00e9dica en:</div>' +
+      '<div style="font-size: 7.8pt; font-weight: bold; margin-top: 4px; margin-bottom: 2px;">El estudiante recibe atenci\u00f3n m\u00e9dica en:</div>' +
       '<table class="pdf-table" style="margin-bottom: 3px;">' +
         '<tr>' +
           '<td style="width: 25%; text-align: center;">' + renderCheck(hasVal(salud.atencion_medica, 'centro de salud'), 'Centro de salud') + '</td>' +
@@ -481,7 +478,10 @@ function buildPDFPagesHTML(record) {
           '<td class="pdf-val">' + esc(acad.extracurriculares) + '</td>' +
         '</tr>' +
       '</table>' +
+    '</div>' +
 
+    '<!-- PAGE 3 -->' +
+    '<div class="pdf-page-pdf" id="pdf-page-3">' +
       '<div class="pdf-section-title">7. HISTORIA VITAL</div>' +
       '<div class="pdf-section-subtitle">Embarazo y parto</div>' +
       '<table class="pdf-table" style="margin-bottom: 4px;">' +
@@ -556,11 +556,8 @@ function buildPDFPagesHTML(record) {
           '<td class="pdf-val">' + esc(hist.alergias_infancia) + '</td>' +
         '</tr>' +
       '</table>' +
-    '</div>' +
 
-    '<!-- PAGE 4 -->' +
-    '<div class="pdf-page-pdf" id="pdf-page-4">' +
-      '<table class="pdf-table" style="margin-bottom: 7px;">' +
+      '<table class="pdf-table" style="margin-top: 4px; margin-bottom: 5px;">' +
         '<tr>' +
           '<td style="width: 26%;" class="field-label">Cirug\u00edas:</td>' +
           '<td class="field-label" style="width: 14%;">Descripci\u00f3n:</td>' +
