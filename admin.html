@@ -16,7 +16,7 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <link rel="stylesheet" href="./css/styles.css">
-  <link rel="stylesheet" href="./css/pdf-format.css?v=9.0">
+  <link rel="stylesheet" href="./css/pdf-format.css?v=9.1">
   <script>
     function handleAdminLogout() {
       if (window.confirm('¿Desea cerrar la sesión del Panel Administrativo?')) {
@@ -216,10 +216,10 @@
         </div>
         <div class="flex items-center gap-2">
           <button type="button" id="editor-btn-pdf" class="apple-btn apple-btn-secondary text-xs">
-            ðŸ“¥ PDF
+            <span>&#128229;</span> PDF
           </button>
           <button type="button" id="editor-btn-preview" class="apple-btn apple-btn-secondary text-xs">
-            ðŸ‘ï¸ Ver
+            <span>&#128065;</span> Ver
           </button>
           <button type="button" onclick="closeEditorModal()" class="text-[var(--apple-text-secondary)] hover:text-[var(--apple-text-primary)] p-1 text-xl leading-none">&times;</button>
         </div>
@@ -288,7 +288,7 @@
               <div class="flex items-center justify-between mb-2">
                 <label class="font-bold">Croquis Domiciliario:</label>
                 <label class="cursor-pointer text-[var(--apple-blue)] font-semibold text-xs">
-                  ðŸ“ Cargar imagen
+                  <span>&#128193;</span> Cargar imagen
                   <input type="file" id="a-croquis-file" accept="image/*" class="hidden">
                 </label>
               </div>
@@ -579,7 +579,7 @@
               Cancelar
             </button>
             <button type="submit" id="btn-save-edit" class="apple-btn apple-btn-success text-xs">
-              ðŸ’¾ Guardar Cambios
+              <span>&#128190;</span> Guardar Cambios
             </button>
           </div>
         </form>
@@ -723,12 +723,12 @@
     <!-- Firebase Cloud SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="./js/firebase-config.js?v=9.0"></script>
+  <script src="./js/firebase-config.js?v=9.1"></script>
   <!-- Scripts -->
-  <script src="./js/dialogs.js?v=9.0"></script>
-  <script src="./js/croquis.js?v=9.0"></script>
-  <script src="./js/pdf-generator.js?v=9.0"></script>
-  <script src="./js/admin.js?v=9.0"></script>
+  <script src="./js/dialogs.js?v=9.1"></script>
+  <script src="./js/croquis.js?v=9.1"></script>
+  <script src="./js/pdf-generator.js?v=9.1"></script>
+  <script src="./js/admin.js?v=9.1"></script>
 </body>
 </html>
 
