@@ -118,13 +118,13 @@ function buildPDFPagesHTML(record) {
           '<td colspan="5" class="pdf-val">' + esc(ident.curso) + '</td>' +
         '</tr>' +
         '<tr>' +
-          '<td colspan="3" style="vertical-align: top; height: 105px; padding: 3px;">' +
+          '<td colspan="3" style="vertical-align: top; height: 130px; padding: 3px;">' +
             '<div style="margin-bottom: 3px;"><strong>DOMICILIO:</strong> <span class="pdf-val">' + esc(ident.domicilio) + '</span></div>' +
             '<div style="margin-top: 10px; margin-bottom: 3px;"><strong>TEL\\u00c9FONO:</strong> <span class="pdf-val">' + esc(ident.telefono) + '</span></div>' +
             '<div style="margin-bottom: 3px;"><strong>CELULAR:</strong> <span class="pdf-val">' + esc(ident.celular) + '</span></div>' +
           '</td>' +
           '<td colspan="3" style="vertical-align: top; padding: 2px;">' +
-            '<div style="font-weight: bold; font-size: 7.2pt; text-align: center; margin-bottom: 2px;">CROQUIS UBICACI\\u00d3N DE LA CASA</div>' +
+            '<div style="font-weight: bold; font-size: 8pt; text-align: center; margin-bottom: 3px;">CROQUIS UBICACI\\u00d3N DE LA CASA</div>' +
             '<div class="croquis-box">' +
               (ident.croquis_data ? '<img src="' + ident.croquis_data + '" alt="Croquis" />' : '<span class="croquis-empty">(Sin croquis adjunto)</span>') +
             '</div>' +
@@ -151,7 +151,7 @@ function buildPDFPagesHTML(record) {
           '</tr>' +
         '</thead>' +
         '<tbody>' +
-          '<tr style="height: 19px;">' +
+          '<tr style="height: 22px;">' +
             '<td class="pdf-val">' + esc(madre.nombre) + '</td>' +
             '<td class="pdf-val" style="text-align: center;">' + esc(madre.edad) + '</td>' +
             '<td class="pdf-val">' + esc(madre.estado_civil) + '</td>' +
@@ -178,7 +178,7 @@ function buildPDFPagesHTML(record) {
           '</tr>' +
         '</thead>' +
         '<tbody>' +
-          '<tr style="height: 19px;">' +
+          '<tr style="height: 22px;">' +
             '<td class="pdf-val">' + esc(padre.nombre) + '</td>' +
             '<td class="pdf-val" style="text-align: center;">' + esc(padre.edad) + '</td>' +
             '<td class="pdf-val">' + esc(padre.estado_civil) + '</td>' +
@@ -205,7 +205,7 @@ function buildPDFPagesHTML(record) {
           '</tr>' +
         '</thead>' +
         '<tbody>' +
-          '<tr style="height: 19px;">' +
+          '<tr style="height: 22px;">' +
             '<td class="pdf-val">' + esc(rep.nombre) + '</td>' +
             '<td class="pdf-val" style="text-align: center;">' + esc(rep.edad) + '</td>' +
             '<td class="pdf-val">' + esc(rep.estado_civil) + '</td>' +
@@ -220,10 +220,10 @@ function buildPDFPagesHTML(record) {
       '</table>' +
 
       '<div class="pdf-section-title">3. REFERENCIAS FAMILIARES DE LA ESTUDIANTE:</div>' +
-      '<div style="font-size: 7.5pt; margin-bottom: 2px;">' +
+      '<div style="font-size: 8.2pt; margin-bottom: 3px;">' +
         'Personas con quien vive el estudiante bajo el mismo techo (s\\u00f3lo las personas que conforman la estructura familiar con quien vive normalmente)::' +
       '</div>' +
-      '<div style="font-size: 7.8pt; margin-bottom: 3px; padding: 2px 0;">' +
+      '<div style="font-size: 8.2pt; margin-bottom: 4px; padding: 2px 0;">' +
         'Madre (' + (refFam.convive_madre ? 'X' : '&nbsp;&nbsp;') + ') &nbsp;' +
         'Padre (' + (refFam.convive_padre ? 'X' : '&nbsp;&nbsp;') + ') &nbsp;' +
         'Hermanos (' + (refFam.convive_hermanos || 0) + ') &nbsp;' +
@@ -244,7 +244,7 @@ function buildPDFPagesHTML(record) {
         '</tr>' +
       '</table>' +
 
-      '<div style="font-size: 7.6pt; font-weight: bold; margin-top: 4px; margin-bottom: 3px;">' +
+      '<div style="font-size: 8.2pt; font-weight: bold; margin-top: 6px; margin-bottom: 4px;">' +
         'OTROS FAMILIARES: <span style="font-weight: normal;">(Miembros del grupo familiar que viven bajo el mismo techo y que no se nombraron arriba. Para los hermanos/as que estudian se especifica el centro educativo)</span>' +
       '</div>' +
       '<table class="pdf-table">' +
@@ -260,7 +260,7 @@ function buildPDFPagesHTML(record) {
         '</thead>' +
         '<tbody>' +
           famRows.map(f =>
-            '<tr style="height: 19px;">' +
+            '<tr style="height: 22px;">' +
               '<td class="pdf-val">' + esc(f.nombres) + '</td>' +
               '<td class="pdf-val">' + esc(f.parentesco) + '</td>' +
               '<td class="pdf-val" style="text-align: center;">' + esc(f.edad) + '</td>' +
@@ -423,7 +423,7 @@ function buildPDFPagesHTML(record) {
         '</tr>' +
       '</table>' +
 
-      '<div style="font-size: 7.8pt; font-weight: bold; margin-top: 4px; margin-bottom: 2px;">El estudiante recibe atenci\\u00f3n m\\u00e9dica en:</div>' +
+      '<div style="font-size: 8.2pt; font-weight: bold; margin-top: 6px; margin-bottom: 3px;">El estudiante recibe atenci\\u00f3n m\\u00e9dica en:</div>' +
       '<table class="pdf-table" style="margin-bottom: 3px;">' +
         '<tr>' +
           '<td style="width: 25%; text-align: center;">' + renderCheck(hasVal(salud.atencion_medica, 'centro de salud'), 'Centro de salud') + '</td>' +
@@ -432,7 +432,7 @@ function buildPDFPagesHTML(record) {
           '<td style="width: 25%; text-align: center;">' + renderCheck(hasVal(salud.atencion_medica, 'cl\\u00ednica privada') || hasVal(salud.atencion_medica, 'clinica privada'), 'Cl\\u00ednica privada') + '</td>' +
         '</tr>' +
       '</table>' +
-      '<div style="font-size: 7.5pt; margin-bottom: 4px;"><strong>NOTA:</strong> <span class="pdf-val">' + esc(salud.atencion_medica_nota) + '</span></div>' +
+      '<div style="font-size: 8.2pt; margin-bottom: 5px;"><strong>NOTA:</strong> <span class="pdf-val">' + esc(salud.atencion_medica_nota) + '</span></div>' +
 
       '<div class="pdf-section-title">6. DATOS ACAD\\u00c9MICOS / RENDIMIENTO ESCOLAR:</div>' +
       '<table class="pdf-table" style="margin-bottom: 3px;">' +
@@ -618,12 +618,13 @@ function buildPDFPagesHTML(record) {
       '</table>' +
 
       '<div class="pdf-section-subtitle">Costumbres, h\\u00e1bitos:</div>' +
-      '<div style="border: 1px solid #000; min-height: 42px; padding: 4px; margin-bottom: 30px; font-size: 7.8pt;" class="pdf-val">' +
+      '<div style="border: 1px solid #000; min-height: 65px; padding: 6px; margin-bottom: 15px; font-size: 8.3pt;" class="pdf-val">' +
         (esc(entorno.costumbres_habitos) || '&nbsp;') +
       '</div>' +
 
       '<div class="signature-area">' +
         '<div class="signature-line"></div>' +
+        '<div style="font-size: 8.5pt; font-weight: bold; margin-bottom: 3px;">FIRMA DEL REPRESENTANTE LEGAL</div>' +
         '<div style="font-size: 8.2pt;"><strong>C.I.:</strong> <span class="pdf-val">' + esc(entorno.firma_ci || rep.telefonos || '') + '</span></div>' +
       '</div>' +
     '</div>' +
@@ -694,7 +695,7 @@ function previewRecordPDF(record) {
         '<meta charset="UTF-8">' +
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
         '<title>Imprimir Registro - ' + studentName + '</title>' +
-        '<link rel="stylesheet" href="/css/pdf-format.css">' +
+        '<link rel="stylesheet" href="./css/pdf-format.css?v=8.0">' +
         '<style>' +
           '.print-toolbar {' +
             'position: fixed;' +
